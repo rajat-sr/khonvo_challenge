@@ -1,15 +1,13 @@
 import React from 'react';
-import Querier from './containers/Querier/Querier';
-import Producer from './containers/Producer/Producer';
 import TitleBar from './components/TitleBar/TitleBar';
+import View from './containers/View';
 import './App.css';
 
 function App() {
   return (
     <div>
       <TitleBar />
-      {/* <Querier /> */}
-      <Producer />
+      <View />
     </div>
   );
 }

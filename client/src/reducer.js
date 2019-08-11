@@ -6,6 +6,7 @@ const initialState = {
 };
 
 const reducer = (state = initialState, action) => {
+  console.log('in reducer')
   if (action.type === OPEN_JOB_DIALOG) {
     return {
       ...state,
