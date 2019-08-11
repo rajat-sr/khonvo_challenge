@@ -8,8 +8,8 @@ function App() {
   return (
     <div>
       <TitleBar />
-      <Querier />
-      {/* <Producer /> */}
+      {/* <Querier /> */}
+      <Producer />
     </div>
   );
 }

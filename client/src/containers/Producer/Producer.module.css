@@ -1,0 +1,9 @@
+.producer {
+  padding: 10px;
+}
+
+.producerJobs {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
