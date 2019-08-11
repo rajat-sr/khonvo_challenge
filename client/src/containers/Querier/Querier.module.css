@@ -1,0 +1,22 @@
+.querier {
+  display: inline-block;
+  padding: 20px;
+}
+
+.querierList {
+  margin: 10px 0;
+  display: flex;
+  flex-direction: row;
+}
+
+.button {
+  margin: 10px 0;
+}
+
+.card {
+  max-height: 550px;
+  width: 400px;
+  margin-right: 20px;
+  padding: 5px 10px;
+  overflow: scroll;
+}

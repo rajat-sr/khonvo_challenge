@@ -1,16 +1,15 @@
 import React from 'react';
-import Querier from './components/Querier';
+import Querier from './containers/Querier/Querier';
+import Producer from './containers/Producer/Producer';
+import TitleBar from './components/TitleBar/TitleBar';
 import './App.css';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Welcome to Khonvo
-        </p>
-        <Querier/>
-      </header>
+    <div>
+      <TitleBar />
+      <Querier />
+      {/* <Producer /> */}
     </div>
   );
 }
