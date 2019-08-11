@@ -1,3 +1,7 @@
 .list {
   width: 400px;
+  height: 450px;
+  /* background: #eee; */
+  overflow: scroll;
+  padding: 5px;
 }
