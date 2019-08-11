@@ -22,7 +22,7 @@ const jobSchema = new mongoose.Schema(
       trim: true,
     },
     addedBy: {
-      type: Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
     },
     location: {
@@ -37,10 +37,11 @@ const jobSchema = new mongoose.Schema(
     candidatesRequired: {
       type: Number,
       required: true,
+      default: 1,
     },
     candidatesProposed: [
       {
-        type: Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'Candidate',
       },
     ],

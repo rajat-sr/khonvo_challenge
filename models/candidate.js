@@ -25,19 +25,19 @@ const candidateSchema = new mongoose.Schema(
     },
     jobsAppliedTo: [
       {
-        type: Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'Job',
       },
     ],
     jobsLikedAt: [
       {
-        type: Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'Job',
       },
     ],
     jobsAcceptedAt: [
       {
-        type: Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'Job',
       },
     ],

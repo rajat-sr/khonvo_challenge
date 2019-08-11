@@ -26,13 +26,13 @@ const userSchema = new mongoose.Schema(
     producerInfo: {
       candidatesCreated: [
         {
-          type: Schema.Types.ObjectId,
+          type: mongoose.Schema.Types.ObjectId,
           ref: 'Candidate',
         },
       ],
       candidatesLiked: [
         {
-          type: Schema.Types.ObjectId,
+          type: mongoose.Schema.Types.ObjectId,
           ref: 'Candidate',
         },
       ],
@@ -40,19 +40,19 @@ const userSchema = new mongoose.Schema(
     querierInfo: {
       jobsCreated: [
         {
-          type: Schema.Types.ObjectId,
+          type: mongoose.Schema.Types.ObjectId,
           ref: 'Job',
         },
       ],
       candidatesLiked: [
         {
-          type: Schema.Types.ObjectId,
+          type: mongoose.Schema.Types.ObjectId,
           ref: 'Candidate',
         },
       ],
       candidatesRejected: [
         {
-          type: Schema.Types.ObjectId,
+          type: mongoose.Schema.Types.ObjectId,
           ref: 'Candidate',
         },
       ],
