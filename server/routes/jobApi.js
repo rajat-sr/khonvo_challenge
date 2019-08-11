@@ -4,6 +4,7 @@ const { isValidDocumentId, isJobStatusValid } = require('../utils');
 const { INTERNAL_SERVER_ERROR, OKAY, BAD_REQUEST, NOT_FOUND } = require('../constants.js');
 
 const Job = require('../models/job');
+const Candidate = require('../models/candidate');
 
 const router = express.Router();
 
@@ -99,5 +100,56 @@ router.patch('/:id/status', async (req, res) => {
 
   return res.status(OKAY).send(modifiedJob);
 });
+
+// Like/Reject a candidate
+async function likeOrRejectCandidate(req, res) {
+  const { jobid, candidateid } = req.params;
+  const { like } = req.body;
+
+  if (!isValidDocumentId(jobid) || !isValidDocumentId(candidateid)) {
+    return res.status(BAD_REQUEST).send('Invalid job id or candidate id');
+  }
+
+  let updatedJob;
+  let candidateStatus = like ? 'LIKED' : 'REJECTED';
+  try {
+    updatedJob = await Job.findOneAndUpdate(
+      { _id: jobid, 'candidatesProposed.candidate': candidateid },
+      { $set: { 'candidatesProposed.$.status': candidateStatus } },
+      { new: true },
+    );
+    if (like) {
+      await Candidate.findByIdAndUpdate(candidateid, { $push: { jobsLikedAt: jobid } });
+    }
+  } catch (e) {
+    return res.status(INTERNAL_SERVER_ERROR).send(e.message);
+  }
+
+  if (!updatedJob) {
+    return res.status(NOT_FOUND).send();
+  }
+
+  return res.status(OKAY).send(updatedJob);
+}
+
+// Like a candidate
+router.patch(
+  '/:jobid/like/:candidateid',
+  (req, res, next) => {
+    req.body.like = true;
+    next();
+  },
+  likeOrRejectCandidate,
+);
+
+// Reject a candidate
+router.patch(
+  '/:jobid/reject/:candidateid',
+  (req, res, next) => {
+    req.body.like = false;
+    next();
+  },
+  likeOrRejectCandidate,
+);
 
 module.exports = router;
