@@ -1,12 +1,17 @@
-import { OPEN_JOB_DIALOG, CLOSE_JOB_DIALOG } from './actions/actions';
+import {
+  OPEN_JOB_DIALOG,
+  CLOSE_JOB_DIALOG,
+  OPEN_CREATE_CANDIDATE_DIALOG,
+  CLOSE_CREATE_CANDIDATE_DIALOG,
+} from './actions/actions';
 
 const initialState = {
-  userRole: 'QUERIER',
+  userRole: 'PRODUCER',
   jobDialogOpen: false,
+  createCandidateDialogOpen: false,
 };
 
 const reducer = (state = initialState, action) => {
-  console.log('in reducer')
   if (action.type === OPEN_JOB_DIALOG) {
     return {
       ...state,
@@ -18,6 +23,20 @@ const reducer = (state = initialState, action) => {
     return {
       ...state,
       jobDialogOpen: false,
+    };
+  }
+
+  if (action.type === OPEN_CREATE_CANDIDATE_DIALOG) {
+    return {
+      ...state,
+      createCandidateDialogOpen: true,
+    };
+  }
+
+  if (action.type === CLOSE_CREATE_CANDIDATE_DIALOG) {
+    return {
+      ...state,
+      createCandidateDialogOpen: false,
     };
   }
 

@@ -11,20 +11,18 @@ class JobDialog extends Component {
     canEscapeKeyClose: true,
     canOutsideClickClose: true,
     enforceFocus: true,
-    isOpen: true,
     usePortal: true,
     round: false,
   };
 
   handleClose = () => {
-    this.setState({ isOpen: false });
     this.props.closeDialog();
   };
 
   render() {
-    const { companyName } = this.props;
+    const { companyName, dialogOpen } = this.props;
     return (
-      <Dialog onClose={this.handleClose} className={classes.twocolumns} {...this.state}>
+      <Dialog {...this.state} onClose={this.handleClose} isOpen={dialogOpen} className={classes.twocolumns} >
         <div className={classes.jobDescription}>
           <h5>JOB DESCRIPTION</h5>
           <h1>Amazon</h1>
@@ -41,7 +39,7 @@ class JobDialog extends Component {
         </div>
         <div className={classes.candidates}>
           <h5>CANDIDATES</h5>
-          <CandidateList />
+          <CandidateList closeJob/>
         </div>
       </Dialog>
     );

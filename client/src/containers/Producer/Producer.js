@@ -4,6 +4,7 @@ import { Card } from '@blueprintjs/core';
 import JobCard from '../../components/JobCard/JobCard';
 import classes from './Producer.module.css';
 import JobDialog from '../../components/JobDialog/JobDialog';
+import CreateCandidate from '../../components/CreateCandidate/CreateCandidate';
 
 class Producer extends Component {
   render() {
@@ -11,6 +12,7 @@ class Producer extends Component {
     return (
       <div className={classes.producer}>
         {this.props.showJobDetailsDialog ? <JobDialog /> : null}
+        {this.props.showCreateCandidateDialog ? <CreateCandidate /> : null}
         <div>Points {points}</div>
         <Card className={classes.producerJobs}>
           <JobCard companyName="Amazon" jobTitle="SDE1" candidatesRequired="2" />
@@ -31,6 +33,7 @@ class Producer extends Component {
 const mapStateToProps = state => {
   return {
     showJobDetailsDialog: state.jobDialogOpen,
+    showCreateCandidateDialog: state.createCandidateDialogOpen,
   };
 };
 
