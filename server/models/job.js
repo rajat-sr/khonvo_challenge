@@ -45,6 +45,12 @@ const jobSchema = new mongoose.Schema(
         ref: 'Candidate',
       },
     ],
+    status: {
+      type: String,
+      enum: ['OPEN', 'INPROCESS', 'CLOSED'],
+      default: 'OPEN',
+      required: true,
+    }
   },
   {
     timestamps: true,

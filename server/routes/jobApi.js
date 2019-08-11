@@ -1,5 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const { isValidDocumentId, isJobStatusValid } = require('../utils');
+
 const Job = require('../models/job');
 
 const router = express.Router();
@@ -20,7 +22,7 @@ router.get('/', async (req, res, next) => {
 router.get('/:id', async (req, res, next) => {
   const { id } = req.params;
 
-  if (!mongoose.Types.ObjectId.isValid(id)) {
+  if (!isValidDocumentId(id)) {
     return res.status(400).send('Invalid job id');
   }
 
@@ -72,6 +74,29 @@ router.post('/', async (req, res, next) => {
   }
 
   return res.status(200).send(savedJob);
+});
+
+// Change status of a job by its id
+router.patch('/:id/status', async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+
+  if (!isValidDocumentId(id)) {
+    return res.status(400).send('Invalid job id');
+  }
+
+  if (isJobStatusValid(status)) {
+    return res.status(400).send('Invalid status');
+  }
+
+  let modifiedJob;
+  try {
+    modifiedJob = await Job.findByIdAndUpdate(id, { $set: { status: status } }, { new: true });
+  } catch (e) {
+    return res.status(500).send(e.message);
+  }
+
+  return res.status(200).send(modifiedJob);
 });
 
 module.exports = router;

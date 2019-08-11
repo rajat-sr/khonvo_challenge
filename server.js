@@ -1,12 +1,12 @@
-const express = require('express');
 const bodyParser = require('body-parser');
+const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const app = express();
 const port = process.env.PORT || 5000;
 const mongodbConnection = process.env.MONGO_CONNECTION;
 
-const jobRoutes = require('./routes/jobApi');
+const jobRoutes = require('./server/routes/jobApi');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
