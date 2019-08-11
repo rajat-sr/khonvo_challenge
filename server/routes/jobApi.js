@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const { isValidDocumentId, isJobStatusValid } = require('../utils');
+const { INTERNAL_SERVER_ERROR, OKAY, BAD_REQUEST, NOT_FOUND } = require('../constants.js');
 
 const Job = require('../models/job');
 
@@ -12,10 +13,10 @@ router.get('/', async (req, res, next) => {
   try {
     jobs = await Job.find();
   } catch (e) {
-    return res.status(500).send(e.message);
+    return res.status(INTERNAL_SERVER_ERROR).send(e.message);
   }
 
-  return res.status(200).send(jobs);
+  return res.status(OKAY).send(jobs);
 });
 
 // Get a job by its id
@@ -23,21 +24,21 @@ router.get('/:id', async (req, res, next) => {
   const { id } = req.params;
 
   if (!isValidDocumentId(id)) {
-    return res.status(400).send('Invalid job id');
+    return res.status(BAD_REQUEST).send('Invalid job id');
   }
 
   let jobs;
   try {
     jobs = await Job.findById(id);
   } catch (e) {
-    return res.status(500).send(e.message);
+    return res.status(INTERNAL_SERVER_ERROR).send(e.message);
   }
 
   if (!jobs) {
-    return res.status(404).send('Not found');
+    return res.status(NOT_FOUND).send('Not found');
   }
 
-  return res.status(200).send(jobs);
+  return res.status(OKAY).send(jobs);
 });
 
 // Add a new job
@@ -54,7 +55,7 @@ router.post('/', async (req, res, next) => {
   const addedBy = '123456789012';
 
   if (!companyName || !jobTitle || !jobDescription || !location || !candidatesRequired) {
-    return res.status(400).send();
+    return res.status(BAD_REQUEST).send();
   }
 
   let savedJob;
@@ -70,10 +71,10 @@ router.post('/', async (req, res, next) => {
       addedBy,
     });
   } catch (e) {
-    return res.status(500).send(e.message);
+    return res.status(INTERNAL_SERVER_ERROR).send(e.message);
   }
 
-  return res.status(200).send(savedJob);
+  return res.status(OKAY).send(savedJob);
 });
 
 // Change status of a job by its id
@@ -82,21 +83,21 @@ router.patch('/:id/status', async (req, res) => {
   const { status } = req.body;
 
   if (!isValidDocumentId(id)) {
-    return res.status(400).send('Invalid job id');
+    return res.status(BAD_REQUEST).send('Invalid job id');
   }
 
   if (isJobStatusValid(status)) {
-    return res.status(400).send('Invalid status');
+    return res.status(BAD_REQUEST).send('Invalid status');
   }
 
   let modifiedJob;
   try {
     modifiedJob = await Job.findByIdAndUpdate(id, { $set: { status: status } }, { new: true });
   } catch (e) {
-    return res.status(500).send(e.message);
+    return res.status(INTERNAL_SERVER_ERROR).send(e.message);
   }
 
-  return res.status(200).send(modifiedJob);
+  return res.status(OKAY).send(modifiedJob);
 });
 
 module.exports = router;

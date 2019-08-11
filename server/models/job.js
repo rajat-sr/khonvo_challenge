@@ -41,8 +41,16 @@ const jobSchema = new mongoose.Schema(
     },
     candidatesProposed: [
       {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Candidate',
+        candidate: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'Candidate',
+        },
+        status: {
+          type: String,
+          enum: ['LIKED', 'REJECTED', 'PENDING'],
+          default: 'PENDING',
+          required: true,
+        },
       },
     ],
     status: {
@@ -50,7 +58,7 @@ const jobSchema = new mongoose.Schema(
       enum: ['OPEN', 'INPROCESS', 'CLOSED'],
       default: 'OPEN',
       required: true,
-    }
+    },
   },
   {
     timestamps: true,

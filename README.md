@@ -14,8 +14,6 @@ Install server and client dependencies
 yarn
 cd client
 yarn
-cd ../server
-yarn
 ```
 
 To start the server and client at the same time (from the root of the project)

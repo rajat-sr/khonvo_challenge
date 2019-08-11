@@ -7,6 +7,7 @@ const port = process.env.PORT || 5000;
 const mongodbConnection = process.env.MONGO_CONNECTION;
 
 const jobRoutes = require('./server/routes/jobApi');
+const candidateRoutes = require('./server/routes/candidateApi');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -17,6 +18,7 @@ app.get('/api/hello', (req, res) => {
 });
 
 app.use('/api/job/', jobRoutes);
+app.use('/api/candidate/', candidateRoutes);
 
 if (process.env.NODE_ENV === 'production') {
   // Serve any static files

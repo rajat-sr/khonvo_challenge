@@ -12,8 +12,6 @@ const candidateSchema = new mongoose.Schema(
     },
     jobTitle: {
       type: String,
-      required: true,
-      trim: true,
     },
     linkedin: {
       type: String,
