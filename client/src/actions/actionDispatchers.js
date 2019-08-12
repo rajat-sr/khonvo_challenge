@@ -7,9 +7,10 @@ import {
   CLOSE_CREATE_JOB_DIALOG,
 } from './actions';
 
-export function openJobDialog() {
+export function openJobDialog(jobid) {
   return {
     type: OPEN_JOB_DIALOG,
+    jobid
   };
 }
 

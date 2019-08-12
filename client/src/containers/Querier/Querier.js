@@ -44,6 +44,7 @@ class Querier extends Component {
         jobTitle={job.jobTitle}
         candidatesRequired={job.candidatesRequired}
         key={job._id}
+        jobid={job._id}
       />
     ));
 
@@ -53,6 +54,7 @@ class Querier extends Component {
         jobTitle={job.jobTitle}
         candidatesRequired={job.candidatesRequired}
         key={job._id}
+        jobid={job._id}
       />
     ));
 

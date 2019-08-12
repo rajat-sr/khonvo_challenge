@@ -6,9 +6,9 @@ import classes from './JobCard.module.css';
 
 class JobCard extends Component {
   render() {
-    const { companyName, jobTitle, candidatesRequired, openDialog } = this.props;
+    const { jobid, companyName, jobTitle, candidatesRequired, openDialog } = this.props;
     return (
-      <Card className={classes.jobcard} onClick={() => openDialog()}>
+      <Card className={classes.jobcard} onClick={() => openDialog(jobid)}>
         <h3>{companyName}</h3>
         <p>{jobTitle}</p>
         <div className={classes.numberAvatar}>{candidatesRequired}</div>
@@ -18,11 +18,12 @@ class JobCard extends Component {
 }
 
 const mapStateToProps = () => {
-  return {}
+  return {};
 };
+
 const mapDispatchToProps = dispatch => {
   return {
-    openDialog: () => dispatch(actionCreators.openJobDialog()),
+    openDialog: (jobid) => dispatch(actionCreators.openJobDialog(jobid)),
   };
 };
 

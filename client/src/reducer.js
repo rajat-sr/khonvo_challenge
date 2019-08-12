@@ -10,6 +10,7 @@ import {
 const initialState = {
   userRole: 'PRODUCER',
   jobDialogOpen: false,
+  jobDialogID: null,
   createCandidateDialogOpen: false,
   createJobDialogOpen: false,
 };
@@ -19,6 +20,7 @@ const reducer = (state = initialState, action) => {
     return {
       ...state,
       jobDialogOpen: true,
+      jobDialogID: action.jobid,
     };
   }
 
@@ -26,6 +28,7 @@ const reducer = (state = initialState, action) => {
     return {
       ...state,
       jobDialogOpen: false,
+      jobDialogID: null
     };
   }
 
