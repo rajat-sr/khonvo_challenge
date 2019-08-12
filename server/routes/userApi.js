@@ -49,7 +49,7 @@ router.post('/', async (req, res, next) => {
     return res.status(UNAUTHORIZED).send(e.message);
   }
 
-  return res.status(200).send({ newUser });
+  return res.status(200).send({ newUser, role: user.role });
 });
 
 // Set user role
@@ -67,7 +67,7 @@ router.patch('/role', verifyUser, async (req, res) => {
     return res.status(INTERNAL_SERVER_ERROR).send(e.message);
   }
 
-  return res.status(OKAY).send();
+  return res.status(OKAY).send({ role });
 });
 
 module.exports = router;

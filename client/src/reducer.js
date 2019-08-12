@@ -5,6 +5,7 @@ import {
   CLOSE_CREATE_CANDIDATE_DIALOG,
   OPEN_CREATE_JOB_DIALOG,
   CLOSE_CREATE_JOB_DIALOG,
+  SET_AUTHENTICATED
 } from './actions/actions';
 
 const initialState = {
@@ -13,6 +14,7 @@ const initialState = {
   selectedJobID: null,
   createCandidateDialogOpen: false,
   createJobDialogOpen: false,
+  showLoginPage: true
 };
 
 const reducer = (state = initialState, action) => {
@@ -60,6 +62,14 @@ const reducer = (state = initialState, action) => {
       ...state,
       createJobDialogOpen: false,
     };
+  }
+
+  if (action.type === SET_AUTHENTICATED) {
+    return {
+      ...state,
+      userRole: action.role,
+      showLoginPage: false
+    }
   }
 
   return state;

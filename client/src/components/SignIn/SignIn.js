@@ -34,7 +34,8 @@ class SignIn extends Component {
       )
       .then(res => {
         successToast('Logged in successfully');
-        // this.props.setAuthenticated();
+        localStorage.setItem('role', res.data.role);
+        this.props.setAuthenticated(res.data.role);
       })
       .catch(e => {
         localStorage.clear();
@@ -66,7 +67,8 @@ class SignIn extends Component {
         if (res.data.newUser) {
           this.setState({ askUserRole: true });
         } else {
-          // this.props.setAuthenticated();
+          localStorage.setItem('role', res.data.role);
+          this.props.setAuthenticated(res.data.role);
         }
       })
       .catch(e => {
@@ -118,7 +120,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    // setAuthenticated: () => dispatch(actionCreators.setAuthenticated()),
+    setAuthenticated: role => dispatch(actionCreators.setAuthenticated(role)),
   };
 };
 

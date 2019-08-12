@@ -5,6 +5,7 @@ import {
   CLOSE_CREATE_CANDIDATE_DIALOG,
   OPEN_CREATE_JOB_DIALOG,
   CLOSE_CREATE_JOB_DIALOG,
+  SET_AUTHENTICATED
 } from './actions';
 
 export function openJobDialog(jobid) {
@@ -43,4 +44,11 @@ export function closeCreateJobDialog() {
   return {
     type: CLOSE_CREATE_JOB_DIALOG,
   };
+}
+
+export function setAuthenticated(role) {
+  return {
+    type: SET_AUTHENTICATED,
+    role
+  }
 }

@@ -1,17 +1,31 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import TitleBar from './components/TitleBar/TitleBar';
 import View from './containers/View';
 import SignIn from './components/SignIn/SignIn';
 import './App.css';
 
-function App() {
-  return (
-    <div>
-      <SignIn/>
-      {/* <TitleBar />
-      <View /> */}
-    </div>
-  );
+class App extends React.Component {
+  render() {
+    return (
+      <div>
+        {this.props.showLoginPage ? (
+          <SignIn />
+        ) : (
+          <>
+            <TitleBar />
+            <View />
+          </>
+        )}
+      </div>
+    );
+  }
 }
 
-export default App;
+const mapStateToProps = state => {
+  return {
+    showLoginPage: state.showLoginPage,
+  };
+};
+
+export default connect(mapStateToProps)(App);

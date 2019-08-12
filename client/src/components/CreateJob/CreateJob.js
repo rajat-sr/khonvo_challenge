@@ -28,6 +28,12 @@ class CreateJob extends Component {
     this.setState(newState);
   };
 
+  handleNumericInput = (value, field) => {
+    const newState = {};
+    newState[field] = value;
+    this.setState(newState);
+  };
+
   handleAddButton = () => {
     const { closeCreateJobDialog } = this.props;
     const url = BASE_URL + '/job';
@@ -41,6 +47,7 @@ class CreateJob extends Component {
       candidatesRequired,
     } = this.state;
 
+    console.log(this.state);
     if (
       !companyName ||
       !companyDescription ||
@@ -146,7 +153,7 @@ class CreateJob extends Component {
             buttonPosition="none"
             leftIcon="dollar"
             fill
-            onChange={event => this.handleInputChange(event, 'compensation')}
+            onValueChange={number => this.handleNumericInput(number, 'compensation')}
             placeholder="100000"
             value={compensation}
             id="compensation"
@@ -162,7 +169,7 @@ class CreateJob extends Component {
             selectAllOnFocus={false}
             fill
             buttonPosition="none"
-            onChange={event => this.handleInputChange(event, 'candidatesRequired')}
+            onValueChange={number => this.handleNumericInput(number, 'candidatesRequired')}
             placeholder="1"
             value={candidatesRequired}
             id="candidates-required"
