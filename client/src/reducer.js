@@ -4,14 +4,14 @@ import {
   OPEN_CREATE_CANDIDATE_DIALOG,
   CLOSE_CREATE_CANDIDATE_DIALOG,
   OPEN_CREATE_JOB_DIALOG,
-  CLOSE_CREATE_JOB_DIALOG
+  CLOSE_CREATE_JOB_DIALOG,
 } from './actions/actions';
 
 const initialState = {
   userRole: 'QUERIER',
   jobDialogOpen: false,
   createCandidateDialogOpen: false,
-  createJobDialogOpen: false
+  createJobDialogOpen: false,
 };
 
 const reducer = (state = initialState, action) => {
