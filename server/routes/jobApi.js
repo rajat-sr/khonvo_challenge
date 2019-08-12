@@ -3,13 +3,15 @@ const mongoose = require('mongoose');
 const { isValidDocumentId, isJobStatusValid } = require('../utils');
 const { INTERNAL_SERVER_ERROR, OKAY, BAD_REQUEST, NOT_FOUND } = require('../constants.js');
 
+const { verifyUser } = require('../middlewares/authentication');
+
 const Job = require('../models/job');
 const Candidate = require('../models/candidate');
 
 const router = express.Router();
 
 // Get all jobs
-router.get('/', async (req, res, next) => {
+router.get('/', verifyUser, async (req, res, next) => {
   let jobs;
   try {
     jobs = await Job.find();
@@ -21,7 +23,7 @@ router.get('/', async (req, res, next) => {
 });
 
 // Get a job by its id
-router.get('/:id', async (req, res, next) => {
+router.get('/:id', verifyUser, async (req, res, next) => {
   const { id } = req.params;
 
   if (!isValidDocumentId(id)) {
@@ -43,7 +45,7 @@ router.get('/:id', async (req, res, next) => {
 });
 
 // Add a new job
-router.post('/', async (req, res, next) => {
+router.post('/', verifyUser, async (req, res, next) => {
   const {
     companyName,
     companyDescription,
@@ -79,7 +81,7 @@ router.post('/', async (req, res, next) => {
 });
 
 // Change status of a job by its id
-router.patch('/:id/status', async (req, res) => {
+router.patch('/:id/status', verifyUser, async (req, res) => {
   const { id } = req.params;
   const { status } = req.body;
 
@@ -135,6 +137,7 @@ async function likeOrRejectCandidate(req, res) {
 // Like a candidate
 router.patch(
   '/:jobid/like/:candidateid',
+  verifyUser,
   (req, res, next) => {
     req.body.like = true;
     next();
@@ -145,6 +148,7 @@ router.patch(
 // Reject a candidate
 router.patch(
   '/:jobid/reject/:candidateid',
+  verifyUser,
   (req, res, next) => {
     req.body.like = false;
     next();
