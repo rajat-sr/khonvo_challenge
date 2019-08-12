@@ -9,11 +9,50 @@ import classes from './Querier.module.css';
 import axios from 'axios';
 import { BASE_URL } from '../../utils';
 import { errorToast } from '../../components/Toast/Toast';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 class Querier extends Component {
   state = {
     jobQueue: [],
     processingQueue: [],
+  };
+
+  onDragEnd = result => {
+    const { destination, source } = result;
+
+    if (!destination) {
+      return;
+    }
+
+    const pickQueue = this.state[source.droppableId];
+    const dropQueue = this.state[destination.droppableId];
+
+    if (pickQueue === dropQueue) {
+      return;
+    }
+
+    const updatedPickQueue = [...pickQueue];
+    const updatedDropQueue = [...dropQueue];
+    const movedJobItem = updatedPickQueue.splice(source.index, 1)[0];
+    updatedDropQueue.splice(destination.index, 0, movedJobItem);
+
+    const newState = { ...this.state };
+    newState[source.droppableId] = updatedPickQueue;
+    newState[destination.droppableId] = updatedDropQueue;
+
+    let newStatus = 'OPEN';
+    if (destination.droppableId === 'processingQueue') {
+      newStatus = 'INPROCESS';
+    } else if (destination.droppableId === 'jobQueue') {
+      newStatus = 'OPEN';
+    }
+
+    axios
+      .patch(`${BASE_URL}/job/${movedJobItem._id}/status`, { status: newStatus })
+      .then()
+      .catch(e => errorToast(e.message));
+
+    this.setState(newState);
   };
 
   componentDidMount() {
@@ -38,24 +77,36 @@ class Querier extends Component {
   render() {
     const { showJobDetailsDialog, showCreateJobDialog, openCreateJob } = this.props;
 
-    const jobQueueList = this.state.jobQueue.map(job => (
-      <JobCard
-        companyName={job.companyName}
-        jobTitle={job.jobTitle}
-        candidatesRequired={job.candidatesRequired}
-        key={job._id}
-        jobid={job._id}
-      />
+    const jobQueueList = this.state.jobQueue.map((job, index) => (
+      <Draggable draggableId={job._id} index={index} key={job._id}>
+        {provided => (
+          <div {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef}>
+            <JobCard
+              companyName={job.companyName}
+              jobTitle={job.jobTitle}
+              candidatesRequired={job.candidatesRequired}
+              key={job._id}
+              jobid={job._id}
+            />
+          </div>
+        )}
+      </Draggable>
     ));
 
-    const processingQueueList = this.state.processingQueue.map(job => (
-      <JobCard
-        companyName={job.companyName}
-        jobTitle={job.jobTitle}
-        candidatesRequired={job.candidatesRequired}
-        key={job._id}
-        jobid={job._id}
-      />
+    const processingQueueList = this.state.processingQueue.map((job, index) => (
+      <Draggable draggableId={job._id} key={job._id} index={index}>
+        {provided => (
+          <div {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef}>
+            <JobCard
+              companyName={job.companyName}
+              jobTitle={job.jobTitle}
+              candidatesRequired={job.candidatesRequired}
+              key={job._id}
+              jobid={job._id}
+            />
+          </div>
+        )}
+      </Draggable>
     ));
 
     return (
@@ -71,14 +122,34 @@ class Querier extends Component {
           Create new job
         </Button>
         <div className={classes.querierList}>
-          <div>
-            <p>JOB QUEUE</p>
-            <Card className={classes.card}>{jobQueueList}</Card>
-          </div>
-          <div>
-            <p>PROCESSING QUEUE</p>
-            <Card className={classes.card}>{processingQueueList}</Card>
-          </div>
+          <DragDropContext onDragEnd={this.onDragEnd}>
+            <div>
+              <p>JOB QUEUE</p>
+              <Card className={classes.card}>
+                <Droppable droppableId="jobQueue">
+                  {provided => (
+                    <div ref={provided.innerRef} {...provided.droppableProps}>
+                      {jobQueueList}
+                      {provided.placeholder}
+                    </div>
+                  )}
+                </Droppable>
+              </Card>
+            </div>
+            <div>
+              <p>PROCESSING QUEUE</p>
+              <Card className={classes.card}>
+                <Droppable droppableId="processingQueue">
+                  {provided => (
+                    <div ref={provided.innerRef} {...provided.droppableProps}>
+                      {processingQueueList}
+                      {provided.placeholder}
+                    </div>
+                  )}
+                </Droppable>
+              </Card>
+            </div>
+          </DragDropContext>
         </div>
       </div>
     );

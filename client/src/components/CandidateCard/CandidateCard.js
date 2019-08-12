@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, Button, H4, Icon, Intent } from '@blueprintjs/core';
+import { Card, H4, Icon, Intent } from '@blueprintjs/core';
 import { IconNames } from '@blueprintjs/icons';
 import classes from './CandidateCard.module.css';
 import axios from 'axios';
