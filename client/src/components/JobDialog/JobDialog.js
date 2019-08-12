@@ -102,7 +102,7 @@ class JobDialog extends Component {
 const mapStateToProps = state => {
   return {
     dialogOpen: state.jobDialogOpen,
-    jobid: state.jobDialogID
+    jobid: state.selectedJobID
   };
 };
 

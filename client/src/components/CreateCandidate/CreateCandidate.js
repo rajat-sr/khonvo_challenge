@@ -1,44 +1,119 @@
 import React, { Component } from 'react';
-import { Dialog, Button } from '@blueprintjs/core';
+import { Dialog, Button, FormGroup, InputGroup, H2, Intent } from '@blueprintjs/core';
 import { connect } from 'react-redux';
 import * as actionCreators from '../../actions/actionDispatchers';
 import classes from './CreateCandidate.module.css';
+import axios from 'axios';
+import { BASE_URL } from '../../utils';
+import { errorToast, successToast } from '../Toast/Toast';
 
 class CreateCandidate extends Component {
   state = {
-    autoFocus: true,
-    canEscapeKeyClose: true,
-    canOutsideClickClose: true,
-    enforceFocus: true,
-    usePortal: true,
-    round: false,
+    name: '',
+    emailId: '',
+    jobTitle: '',
+    linkedin: '',
+    github: '',
   };
 
   handleClose = () => {
     this.props.closeCreateCandidateDialog();
   };
 
+  handleInputChange = ({ target }, field) => {
+    let newState = {};
+    newState[field] = target.value;
+    this.setState(newState);
+  };
+
+  handleButtonClick = () => {
+    const { name, emailId, jobTitle, linkedin, github } = this.state;
+    const { jobid } = this.props;
+    if (!name || !emailId || !jobTitle) {
+      errorToast('Please fill all the required inputs');
+      return;
+    }
+
+    const url = BASE_URL + '/candidate';
+    axios
+      .post(url, {
+        name,
+        emailId,
+        jobTitle,
+        linkedin,
+        github,
+        jobid
+      })
+      .then(() => {
+        successToast('New Candidate Added');
+        this.handleClose();
+      })
+      .catch(e => {console.log(e);errorToast(e.message)});
+  };
+
   render() {
     const { createCandidateDialogOpen } = this.props;
+    const { name, emailId, jobTitle, linkedin, github } = this.state;
     return (
       <Dialog
-        {...this.state}
+        autoFocus
+        canEscapeKeyClose
+        canOutsideClickClose
+        enforceFocus
+        usePortal
+        round={false}
         isOpen={createCandidateDialogOpen}
         onClose={() => this.handleClose()}
         className={classes.create}
       >
-        <h2>Add a new candidate</h2>
-        <label>Name: </label>
-        <input type="text" value />
-        <label>Email: </label>
-        <input type="text" />
-        <label>Job Title: </label>
-        <input type="text" />
-        <label>LinkedIN: </label>
-        <input type="text" />
-        <label>GitHub: </label>
-        <input type="text" />
-        <Button className={classes.addbutton}>Add</Button>
+        <H2>Add a new candidate</H2>
+        <FormGroup label="Name" labelFor="name" labelInfo="(required)">
+          <InputGroup
+            id="name"
+            value={name}
+            onChange={event => this.handleInputChange(event, 'name')}
+            placeholder="Tony Stark"
+          />
+        </FormGroup>
+        <FormGroup label="Email" labelFor="email" labelInfo="(required)">
+          <InputGroup
+            id="email"
+            value={emailId}
+            onChange={event => this.handleInputChange(event, 'emailId')}
+            placeholder="tony@starkindustries.com"
+          />
+        </FormGroup>
+        <FormGroup label="Job Title" labelFor="job-title" labelInfo="(required)">
+          <InputGroup
+            id="job-title"
+            value={jobTitle}
+            onChange={event => this.handleInputChange(event, 'jobTitle')}
+            placeholder="Chief Executive Officer"
+          />
+        </FormGroup>
+        <FormGroup label="LinkedIN profile" labelFor="linkedin">
+          <InputGroup
+            id="linkedin"
+            value={linkedin}
+            onChange={event => this.handleInputChange(event, 'linkedin')}
+            placeholder="www.linkedin.com/in/tonystark"
+          />
+        </FormGroup>
+        <FormGroup label="GitHub profile" labelFor="github">
+          <InputGroup
+            id="github"
+            value={github}
+            onChange={event => this.handleInputChange(event, 'github')}
+            placeholder="github.com/tonystark"
+          />
+        </FormGroup>
+        <Button
+          intent={Intent.SUCCESS}
+          onClick={this.handleButtonClick}
+          className={classes.addbutton}
+        >
+          Add
+        </Button>
       </Dialog>
     );
   }
@@ -47,6 +122,7 @@ class CreateCandidate extends Component {
 const mapStateToProps = state => {
   return {
     createCandidateDialogOpen: state.createCandidateDialogOpen,
+    jobid: state.selectedJobID
   };
 };
 

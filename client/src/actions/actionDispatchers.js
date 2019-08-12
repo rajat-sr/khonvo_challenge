@@ -20,9 +20,10 @@ export function closeJobDialog() {
   };
 }
 
-export function openCreateCandidateDialog() {
+export function openCreateCandidateDialog(jobid) {
   return {
     type: OPEN_CREATE_CANDIDATE_DIALOG,
+    jobid
   };
 }
 

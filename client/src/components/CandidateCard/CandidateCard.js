@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Card, Button } from '@blueprintjs/core';
+import { Card, Button, H4, Icon, Intent } from '@blueprintjs/core';
+import { IconNames } from '@blueprintjs/icons';
 import classes from './CandidateCard.module.css';
 import axios from 'axios';
 import { BASE_URL } from '../../utils';
@@ -25,29 +26,64 @@ class CandidateCard extends Component {
   render() {
     let { buttons, liked } = this.props;
     let likeStatus = null;
-    const { name, emailId, jobTitle, linkedin, github } = this.props.candidate;
+    let { name, emailId, jobTitle, linkedin, github } = this.props.candidate;
     if (liked !== 'PENDING') {
       buttons = undefined;
-      likeStatus = liked;
+      likeStatus = (
+        <Icon
+          icon={IconNames.TICK}
+          iconSize={Icon.SIZE_LARGE}
+          intent={Intent.SUCCESS}
+          style={{ marginLeft: '5px' }}
+        />
+      );
+    }
+
+    if (linkedin && !linkedin.substring(0, 3) !== 'http') {
+      linkedin = 'http://' + linkedin;
+    }
+    if (github && !github.substring(0, 3) !== 'http') {
+      github = 'http://' + github;
     }
 
     return (
       <Card className={classes.card}>
-        <p>{name}</p>
-        <p>{emailId}</p>
+        <H4>
+          {name}
+          {likeStatus}
+        </H4>
         <p>{jobTitle}</p>
-        <p>{linkedin}</p>
-        <p>{github}</p>
-        {likeStatus}
+        <span>
+          <a href={`mailto:${emailId}`}>Email</a>
+        </span>
+        {linkedin ? (
+          <span>
+            <a
+              rel="noopener noreferrer"
+              target="_blank"
+              href={linkedin}
+              style={{ marginLeft: '5px' }}
+            >
+              LinkedIN
+            </a>
+          </span>
+        ) : null}
+        {github ? (
+          <a rel="noopener noreferrer" target="_blank" href={github} style={{ marginLeft: '5px' }}>
+            GitHub
+          </a>
+        ) : null}
         {buttons ? (
-          <>
-            <Button type="Success" onClick={() => this.handleButtonClick(true)}>
+          <div>
+            <span className={classes.icon} onClick={() => this.handleButtonClick(true)}>
+              <Icon icon={IconNames.TICK} iconSize={Icon.SIZE_LARGE} intent={Intent.SUCCESS} />
               Like
-            </Button>
-            <Button type="Danger" onClick={() => this.handleButtonClick(false)}>
+            </span>
+            <span className={classes.icon} onClick={() => this.handleButtonClick(false)}>
+              <Icon icon={IconNames.CROSS} iconSize={Icon.SIZE_LARGE} intent={Intent.DANGER} />
               Reject
-            </Button>
-          </>
+            </span>
+          </div>
         ) : null}
       </Card>
     );

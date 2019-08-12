@@ -10,7 +10,7 @@ import {
 const initialState = {
   userRole: 'QUERIER',
   jobDialogOpen: false,
-  jobDialogID: null,
+  selectedJobID: null,
   createCandidateDialogOpen: false,
   createJobDialogOpen: false,
 };
@@ -20,7 +20,7 @@ const reducer = (state = initialState, action) => {
     return {
       ...state,
       jobDialogOpen: true,
-      jobDialogID: action.jobid,
+      selectedJobID: action.jobid,
     };
   }
 
@@ -28,7 +28,7 @@ const reducer = (state = initialState, action) => {
     return {
       ...state,
       jobDialogOpen: false,
-      jobDialogID: null
+      selectedJobID: null,
     };
   }
 
@@ -36,6 +36,7 @@ const reducer = (state = initialState, action) => {
     return {
       ...state,
       createCandidateDialogOpen: true,
+      selectedJobID: action.jobid,
     };
   }
 
@@ -43,6 +44,7 @@ const reducer = (state = initialState, action) => {
     return {
       ...state,
       createCandidateDialogOpen: false,
+      selectedJobID: null,
     };
   }
 

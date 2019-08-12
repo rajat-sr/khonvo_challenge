@@ -8,8 +8,9 @@ import CandidateCard from '../CandidateCard/CandidateCard';
 
 class CandidateList extends Component {
   handleAddCandidate() {
+    const jobid = this.props.jobid;
     this.props.closeJobDialog();
-    this.props.openCreateCandidate();
+    this.props.openCreateCandidate(jobid);
   }
 
   render() {
@@ -37,12 +38,13 @@ class CandidateList extends Component {
 const mapStateToProps = state => {
   return {
     userRole: state.userRole,
+    jobid: state.selectedJobID
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    openCreateCandidate: () => dispatch(actionCreators.openCreateCandidateDialog()),
+    openCreateCandidate: (jobid) => dispatch(actionCreators.openCreateCandidateDialog(jobid)),
     closeJobDialog: () => dispatch(actionCreators.closeJobDialog()),
   };
 };
