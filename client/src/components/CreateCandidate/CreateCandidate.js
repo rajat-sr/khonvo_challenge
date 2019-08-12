@@ -42,13 +42,16 @@ class CreateCandidate extends Component {
         jobTitle,
         linkedin,
         github,
-        jobid
+        jobid,
       })
       .then(() => {
         successToast('New Candidate Added');
         this.handleClose();
       })
-      .catch(e => {console.log(e);errorToast(e.message)});
+      .catch(e => {
+        console.log(e);
+        errorToast(e.message);
+      });
   };
 
   render() {
@@ -110,6 +113,7 @@ class CreateCandidate extends Component {
         <Button
           intent={Intent.SUCCESS}
           onClick={this.handleButtonClick}
+          icon="plus"
           className={classes.addbutton}
         >
           Add
@@ -122,7 +126,7 @@ class CreateCandidate extends Component {
 const mapStateToProps = state => {
   return {
     createCandidateDialogOpen: state.createCandidateDialogOpen,
-    jobid: state.selectedJobID
+    jobid: state.selectedJobID,
   };
 };
 

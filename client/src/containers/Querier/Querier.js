@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as actionCreators from '../../actions/actionDispatchers';
-import { Button, Card } from '@blueprintjs/core';
+import { Button, Card, Intent } from '@blueprintjs/core';
 import JobCard from '../../components/JobCard/JobCard';
 import JobDialog from '../../components/JobDialog/JobDialog';
 import CreateJob from '../../components/CreateJob/CreateJob';
@@ -114,7 +114,7 @@ class Querier extends Component {
         {showJobDetailsDialog ? <JobDialog /> : null}
         {showCreateJobDialog ? <CreateJob /> : null}
         <Button
-          type="primary"
+          intent={Intent.PRIMARY}
           icon="plus"
           className={classes.button}
           onClick={() => openCreateJob()}

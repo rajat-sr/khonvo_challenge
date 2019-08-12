@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Dialog, Button } from '@blueprintjs/core';
+import { Dialog, Button, FormGroup, InputGroup, H2, Intent, NumericInput } from '@blueprintjs/core';
 import { connect } from 'react-redux';
 import * as actionCreators from '../../actions/actionDispatchers';
 import classes from './CreateJob.module.css';
@@ -9,19 +9,13 @@ import { errorToast, successToast } from '../Toast/Toast';
 
 class CreateJob extends Component {
   state = {
-    autoFocus: true,
-    canEscapeKeyClose: true,
-    canOutsideClickClose: true,
-    enforceFocus: true,
-    usePortal: true,
-    round: false,
     companyName: '',
     companyDescription: '',
     jobTitle: '',
     jobDescription: '',
     location: '',
-    compensation: 0,
-    candidatesRequired: 1,
+    compensation: '',
+    candidatesRequired: '',
   };
 
   handleClose = () => {
@@ -46,6 +40,19 @@ class CreateJob extends Component {
       compensation,
       candidatesRequired,
     } = this.state;
+
+    if (
+      !companyName ||
+      !companyDescription ||
+      !jobTitle ||
+      !jobDescription ||
+      !location ||
+      !compensation ||
+      !candidatesRequired
+    ) {
+      return errorToast('All fields are required');
+    }
+
     axios
       .post(url, {
         companyName,
@@ -77,55 +84,96 @@ class CreateJob extends Component {
 
     return (
       <Dialog
-        {...this.state}
+        autoFocus
+        canEscapeKeyClose
+        canOutsideClickClose
+        enforceFocus
+        usePortal
+        round={false}
         isOpen={createJobDialogOpen}
         onClose={() => this.handleClose()}
         className={classes.create}
       >
-        <h2>Add a new job</h2>
-        <label>Company Name: </label>
-        <input
-          type="text"
-          value={companyName}
-          onChange={event => this.handleInputChange(event, 'companyName')}
-        />
-        <label>Company Description: </label>
-        <input
-          type="text"
-          value={companyDescription}
-          onChange={event => this.handleInputChange(event, 'companyDescription')}
-        />
-        <label>Job Title: </label>
-        <input
-          type="text"
-          value={jobTitle}
-          onChange={event => this.handleInputChange(event, 'jobTitle')}
-        />
-        <label>Job Description: </label>
-        <input
-          type="text"
-          value={jobDescription}
-          onChange={event => this.handleInputChange(event, 'jobDescription')}
-        />
-        <label>Location: </label>
-        <input
-          type="text"
-          value={location}
-          onChange={event => this.handleInputChange(event, 'location')}
-        />
-        <label>Compensation: </label>
-        <input
-          type="text"
-          value={compensation}
-          onChange={event => this.handleInputChange(event, 'compensation')}
-        />
-        <label>Number of Candidates Required: </label>
-        <input
-          type="text"
-          value={candidatesRequired}
-          onChange={event => this.handleInputChange(event, 'candidatesRequired')}
-        />
-        <Button className={classes.addbutton} onClick={() => this.handleAddButton()}>
+        <H2>Add a new job</H2>
+        <FormGroup label="Company Name" labelFor="name" labelInfo="(required)">
+          <InputGroup
+            id="name"
+            value={companyName}
+            onChange={event => this.handleInputChange(event, 'companyName')}
+            placeholder="Khonvo"
+          />
+        </FormGroup>
+        <FormGroup
+          label="Company Description"
+          labelFor="company-description"
+          labelInfo="(required)"
+        >
+          <InputGroup
+            id="company-description"
+            value={companyDescription}
+            onChange={event => this.handleInputChange(event, 'companyDescription')}
+            placeholder="Khonvo help recruiters make more placements..."
+          />
+        </FormGroup>
+        <FormGroup label="Job Position" labelFor="job-title" labelInfo="(required)">
+          <InputGroup
+            id="job-title"
+            value={jobTitle}
+            onChange={event => this.handleInputChange(event, 'jobTitle')}
+            placeholder="Software Engineer/CEO"
+          />
+        </FormGroup>
+        <FormGroup label="Job Description" labelFor="job-description" labelInfo="(required)">
+          <InputGroup
+            id="job-description"
+            value={jobDescription}
+            onChange={event => this.handleInputChange(event, 'jobDescription')}
+            placeholder="You'll be responsible for deploying..."
+          />
+        </FormGroup>
+        <FormGroup label="Location" labelFor="location" labelInfo="(required)">
+          <InputGroup
+            id="location"
+            value={location}
+            onChange={event => this.handleInputChange(event, 'location')}
+            placeholder="Remote"
+          />
+        </FormGroup>
+        <FormGroup label="Compensation" labelFor="compensation" labelInfo="(required)">
+          <NumericInput
+            allowNumericCharactersOnly
+            selectAllOnFocus={false}
+            buttonPosition="none"
+            leftIcon="dollar"
+            fill
+            onChange={event => this.handleInputChange(event, 'compensation')}
+            placeholder="100000"
+            value={compensation}
+            id="compensation"
+          />
+        </FormGroup>
+        <FormGroup
+          label="Number of Candidates Required"
+          labelFor="candidates-required"
+          labelInfo="(required)"
+        >
+          <NumericInput
+            allowNumericCharactersOnly
+            selectAllOnFocus={false}
+            fill
+            buttonPosition="none"
+            onChange={event => this.handleInputChange(event, 'candidatesRequired')}
+            placeholder="1"
+            value={candidatesRequired}
+            id="candidates-required"
+          />
+        </FormGroup>
+        <Button
+          intent={Intent.SUCCESS}
+          className={classes.addbutton}
+          icon="plus"
+          onClick={() => this.handleAddButton()}
+        >
           Add
         </Button>
       </Dialog>
