@@ -1,8 +1,12 @@
 const { OAuth2Client } = require('google-auth-library');
 const CLIENT_ID = process.env.GOOGLE_ID;
+const { UNAUTHORIZED, INTERNAL_SERVER_ERROR, BAD_REQUEST } = require('../constants');
+
+const User = require('../models/user');
 
 async function verifyUser(req, res, next) {
   let user;
+
   try {
     const authToken = req.headers.authorization.split(' ')[1];
     if (!authToken) {
@@ -16,7 +20,7 @@ async function verifyUser(req, res, next) {
     });
     const payload = ticket.getPayload();
     const email = payload.email;
-
+    
     user = await User.findOne({ emailId: email });
     if (!user) {
       throw new Error('User is not in database');
@@ -25,7 +29,7 @@ async function verifyUser(req, res, next) {
     return res.status(UNAUTHORIZED).send(e.message);
   }
 
-  req.user = user;
+  req.body.user = user;
   next();
 }
 

@@ -20,8 +20,6 @@ const userSchema = new mongoose.Schema(
     role: {
       type: String,
       enum: ['QUERIER', 'PRODUCER'],
-      default: 'PRODUCER',
-      required: true,
     },
     producerInfo: {
       candidatesCreated: [

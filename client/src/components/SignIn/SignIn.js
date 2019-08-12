@@ -1,16 +1,55 @@
 import React, { Component } from 'react';
+import { Button, Card, Radio, RadioGroup, Intent } from '@blueprintjs/core';
 import { GoogleLogin } from 'react-google-login';
 import { errorToast, successToast } from '../Toast/Toast';
 import axios from 'axios';
 import { BASE_URL } from '../../utils';
+import { connect } from 'react-redux';
+import * as actionCreators from '../../actions/actionDispatchers';
 
 class SignIn extends Component {
+  state = {
+    askUserRole: false,
+    userRole: 'PRODUCER',
+  };
+
+  handleUserRoleChange = event => {
+    const value = event.currentTarget.value;
+    this.setState({ userRole: value });
+  };
+
+  handleButtonClick = () => {
+    const url = BASE_URL + '/user/role';
+    axios
+      .patch(
+        url,
+        {
+          role: this.state.userRole,
+        },
+        {
+          headers: {
+            Authorization: 'Bearer ' + localStorage.getItem('khonvotoken'),
+          },
+        },
+      )
+      .then(res => {
+        successToast('Logged in successfully');
+        // this.props.setAuthenticated();
+      })
+      .catch(e => {
+        localStorage.clear();
+        errorToast(e.message);
+      });
+  };
+
   responseGoogle = response => {
     if (response.error) {
       return errorToast(`Error: ${response.error}`);
     }
     const token = response.tokenObj.id_token;
     localStorage.setItem('khonvotoken', token);
+    localStorage.setItem('name', response.tokenObj.name);
+    localStorage.setItem('email', response.tokenObj.email);
 
     const url = BASE_URL + '/user';
     axios
@@ -19,16 +58,19 @@ class SignIn extends Component {
         {},
         {
           headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
             Authorization: 'Bearer ' + token,
           },
         },
       )
-      .then(() => {
-        successToast('Logged in successfully');
+      .then(res => {
+        if (res.data.newUser) {
+          this.setState({ askUserRole: true });
+        } else {
+          // this.props.setAuthenticated();
+        }
       })
       .catch(e => {
-        localStorage.removeItem('khonvotoken');
+        localStorage.clear();
         errorToast(e.message);
       });
   };
@@ -36,21 +78,51 @@ class SignIn extends Component {
   render() {
     return (
       <div>
-        <GoogleLogin
-          clientId={process.env.REACT_APP_GOOGLE_ID}
-          render={renderProps => (
-            <button onClick={renderProps.onClick} disabled={renderProps.disabled}>
-              This is my custom Google button
-            </button>
-          )}
-          buttonText="Login"
-          onSuccess={this.responseGoogle}
-          onFailure={this.responseGoogle}
-          cookiePolicy={'single_host_origin'}
-        />
+        {this.state.askUserRole ? (
+          <div>
+            <RadioGroup
+              label="Please choose your role. This cannot be changed in the future."
+              onChange={this.handleUserRoleChange}
+              selectedValue={this.state.userRole}
+              inline
+            >
+              <Radio label="Producer" value="PRODUCER" />
+              <Radio label="Querier" value="QUERIER" />
+            </RadioGroup>
+            <Button intent={Intent.PRIMARY} onClick={this.handleButtonClick}>
+              Submit
+            </Button>
+          </div>
+        ) : (
+          <GoogleLogin
+            clientId={process.env.REACT_APP_GOOGLE_ID}
+            render={renderProps => (
+              <button onClick={renderProps.onClick} disabled={renderProps.disabled}>
+                This is my custom Google button
+              </button>
+            )}
+            buttonText="Login"
+            onSuccess={this.responseGoogle}
+            onFailure={this.responseGoogle}
+            cookiePolicy={'single_host_origin'}
+          />
+        )}
       </div>
     );
   }
 }
 
-export default SignIn;
+const mapStateToProps = state => {
+  return {};
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    // setAuthenticated: () => dispatch(actionCreators.setAuthenticated()),
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(SignIn);

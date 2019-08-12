@@ -1,6 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const { isValidDocumentId, isJobStatusValid } = require('../utils');
+const { isDocumentIdValid, isJobStatusValid } = require('../utils');
 const { INTERNAL_SERVER_ERROR, OKAY, BAD_REQUEST, NOT_FOUND } = require('../constants.js');
 
 const { verifyUser } = require('../middlewares/authentication');
@@ -26,7 +26,7 @@ router.get('/', verifyUser, async (req, res, next) => {
 router.get('/:id', verifyUser, async (req, res, next) => {
   const { id } = req.params;
 
-  if (!isValidDocumentId(id)) {
+  if (!isDocumentIdValid(id)) {
     return res.status(BAD_REQUEST).send('Invalid job id');
   }
 
@@ -85,7 +85,7 @@ router.patch('/:id/status', verifyUser, async (req, res) => {
   const { id } = req.params;
   const { status } = req.body;
 
-  if (!isValidDocumentId(id)) {
+  if (!isDocumentIdValid(id)) {
     return res.status(BAD_REQUEST).send('Invalid job id');
   }
 
@@ -108,7 +108,7 @@ async function likeOrRejectCandidate(req, res) {
   const { jobid, candidateid } = req.params;
   const { like } = req.body;
 
-  if (!isValidDocumentId(jobid) || !isValidDocumentId(candidateid)) {
+  if (!isDocumentIdValid(jobid) || !isDocumentIdValid(candidateid)) {
     return res.status(BAD_REQUEST).send('Invalid job id or candidate id');
   }
 

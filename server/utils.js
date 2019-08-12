@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-function isValidDocumentId(id) {
+function isDocumentIdValid(id) {
   return mongoose.Types.ObjectId.isValid(id);
 }
 
@@ -8,7 +8,12 @@ function isJobStatusValid(status) {
   return !status || (status !== 'OPEN' && status !== 'INPROCESS' && status !== 'CLOSED');
 }
 
+function isRoleValid(role) {
+  return role === 'PRODUCER' || role === 'QUERIER';
+}
+
 module.exports = {
-  isValidDocumentId,
-  isJobStatusValid
+  isDocumentIdValid,
+  isJobStatusValid,
+  isRoleValid
 };

@@ -1,6 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const { OAuth2Client } = require('google-auth-library');
+const { verifyUser } = require('../middlewares/authentication');
+const { isRoleValid } = require('../utils');
 const {
   INTERNAL_SERVER_ERROR,
   UNAUTHORIZED,
@@ -21,6 +23,7 @@ router.post('/', async (req, res, next) => {
   const client = new OAuth2Client(CLIENT_ID);
 
   let user;
+  let newUser = false;
   try {
     const ticket = await client.verifyIdToken({
       idToken: authToken,
@@ -31,19 +34,40 @@ router.post('/', async (req, res, next) => {
 
     user = await User.findOne({ emailId: email });
     if (!user) {
-      const newUser = {
+      const userDoc = {
         name: payload.name,
         emailId: payload.email,
         googleId: payload.sub,
         imageUrl: payload.picture,
       };
-      user = await User.create(newUser);
+      user = await User.create(userDoc);
+      newUser = true;
+    } else if (!user.role) {
+      newUser = true;
     }
   } catch (e) {
     return res.status(UNAUTHORIZED).send(e.message);
   }
 
-  return res.status(200).send(user.name);
+  return res.status(200).send({ newUser });
+});
+
+// Set user role
+router.patch('/role', verifyUser, async (req, res) => {
+  const { role } = req.body;
+  const userid = req.body.user._id;
+
+  if (!isRoleValid(role)) {
+    return res.status(BAD_REQUEST).send();
+  }
+
+  try {
+    await User.findByIdAndUpdate(userid, { $set: { role: role } }, { new: true });
+  } catch (e) {
+    return res.status(INTERNAL_SERVER_ERROR).send(e.message);
+  }
+
+  return res.status(OKAY).send();
 });
 
 module.exports = router;

@@ -1,6 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const { isValidDocumentId } = require('../utils');
+const { isDocumentIdValid } = require('../utils');
 const { INTERNAL_SERVER_ERROR, OKAY, BAD_REQUEST, NOT_FOUND } = require('../constants.js');
 const { verifyUser } = require('../middlewares/authentication');
 
@@ -25,7 +25,7 @@ router.get('/', async (req, res, next) => {
 router.get('/:id', verifyUser, async (req, res, next) => {
   const { id } = req.params;
 
-  if (!isValidDocumentId(id)) {
+  if (!isDocumentIdValid(id)) {
     return res.status(BAD_REQUEST).send('Invalid candidate id');
   }
 
@@ -51,7 +51,7 @@ router.post('/', verifyUser, async (req, res, next) => {
     return res.status(BAD_REQUEST).send();
   }
 
-  if (!isValidDocumentId(jobid)) {
+  if (!isDocumentIdValid(jobid)) {
     return res.status(BAD_REQUEST).send('Invalid job id');
   }
 
