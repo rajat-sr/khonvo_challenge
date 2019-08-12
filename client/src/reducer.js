@@ -8,7 +8,7 @@ import {
 } from './actions/actions';
 
 const initialState = {
-  userRole: 'PRODUCER',
+  userRole: 'QUERIER',
   jobDialogOpen: false,
   jobDialogID: null,
   createCandidateDialogOpen: false,

@@ -56,7 +56,7 @@ class JobDialog extends Component {
   }
 
   render() {
-    const { dialogOpen } = this.props;
+    const { dialogOpen, jobid } = this.props;
     const {
       companyName,
       companyDescription,
@@ -87,12 +87,12 @@ class JobDialog extends Component {
           <p>{addedBy}</p>
           <p>Location: {location}</p>
           <p>${compensation}</p>
-          <p>{candidatesRequired} number of candidates are required</p>
+          <p>{candidatesRequired} candidate(s) are required</p>
           <p>Job is {status.toLowerCase()}</p>
         </div>
         <div className={classes.candidates}>
           <h5>CANDIDATES</h5>
-          <CandidateList closeJob />
+          <CandidateList candidates={candidatesProposed} jobid={jobid} />
         </div>
       </Dialog>
     );

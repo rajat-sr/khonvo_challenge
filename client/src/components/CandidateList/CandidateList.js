@@ -13,29 +13,17 @@ class CandidateList extends Component {
   }
 
   render() {
-    const { userRole } = this.props;
+    const { userRole, candidates, jobid } = this.props;
+    const candidateList = candidates.map(candidate => {
+      if (userRole === 'QUERIER') {
+        return <QuerierCard liked={candidate.status} candidate={candidate.candidate} key={candidate._id} jobid={jobid}/>;
+      } else {
+        return <CandidateCard liked={candidate.status} candidate={candidate.candidate} key={candidate._id} jobid={jobid} />;
+      }
+    });
     return (
       <div>
-        <div className={classes.list}>
-          {userRole === 'QUERIER' ? (
-            <>
-              <QuerierCard />
-              <QuerierCard />
-              <QuerierCard />
-              <QuerierCard />
-              <QuerierCard />
-            </>
-          ) : (
-            <>
-              <CandidateCard />
-              <CandidateCard />
-              <CandidateCard />
-              <CandidateCard />
-              <CandidateCard />
-              <CandidateCard />
-            </>
-          )}
-        </div>
+        <div className={classes.list}>{candidateList}</div>
         {userRole === 'QUERIER' ? null : (
           <Button style={{ marginTop: '5px' }} onClick={() => this.handleAddCandidate()}>
             Add new candidate

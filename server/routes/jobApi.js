@@ -30,7 +30,7 @@ router.get('/:id', async (req, res, next) => {
 
   let jobs;
   try {
-    jobs = await Job.findById(id);
+    jobs = await Job.findById(id).populate({ path: 'candidatesProposed.candidate' });
   } catch (e) {
     return res.status(INTERNAL_SERVER_ERROR).send(e.message);
   }

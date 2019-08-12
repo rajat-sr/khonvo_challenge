@@ -3,7 +3,7 @@ import CandidateCard from './CandidateCard';
 
 class QuerierCard extends Component {
   render() {
-    return <CandidateCard buttons />;
+    return <CandidateCard buttons {...this.props} />;
   }
 }
 
