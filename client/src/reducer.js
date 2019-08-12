@@ -3,12 +3,15 @@ import {
   CLOSE_JOB_DIALOG,
   OPEN_CREATE_CANDIDATE_DIALOG,
   CLOSE_CREATE_CANDIDATE_DIALOG,
+  OPEN_CREATE_JOB_DIALOG,
+  CLOSE_CREATE_JOB_DIALOG
 } from './actions/actions';
 
 const initialState = {
-  userRole: 'PRODUCER',
+  userRole: 'QUERIER',
   jobDialogOpen: false,
   createCandidateDialogOpen: false,
+  createJobDialogOpen: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -37,6 +40,20 @@ const reducer = (state = initialState, action) => {
     return {
       ...state,
       createCandidateDialogOpen: false,
+    };
+  }
+
+  if (action.type === OPEN_CREATE_JOB_DIALOG) {
+    return {
+      ...state,
+      createJobDialogOpen: true,
+    };
+  }
+
+  if (action.type === CLOSE_CREATE_JOB_DIALOG) {
+    return {
+      ...state,
+      createJobDialogOpen: false,
     };
   }
 

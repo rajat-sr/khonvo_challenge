@@ -1,16 +1,25 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import * as actionCreators from '../../actions/actionDispatchers';
 import { Button, Card } from '@blueprintjs/core';
 import JobCard from '../../components/JobCard/JobCard';
 import JobDialog from '../../components/JobDialog/JobDialog';
+import CreateJob from '../../components/CreateJob/CreateJob';
 import classes from './Querier.module.css';
 
 class Querier extends Component {
   render() {
+    const { showJobDetailsDialog, showCreateJobDialog, openCreateJob } = this.props;
     return (
       <div className={classes.querier}>
-        {this.props.showJobDetailsDialog ? <JobDialog /> : null}
-        <Button type="primary" icon="plus" className={classes.button}>
+        {showJobDetailsDialog ? <JobDialog /> : null}
+        {showCreateJobDialog ? <CreateJob /> : null}
+        <Button
+          type="primary"
+          icon="plus"
+          className={classes.button}
+          onClick={() => openCreateJob()}
+        >
           Create new job
         </Button>
         <div className={classes.querierList}>
@@ -46,7 +55,17 @@ class Querier extends Component {
 const mapStateToProps = state => {
   return {
     showJobDetailsDialog: state.jobDialogOpen,
+    showCreateJobDialog: state.createJobDialogOpen,
   };
 };
 
-export default connect(mapStateToProps)(Querier);
+const mapDispatchToProps = dispatch => {
+  return {
+    openCreateJob: () => dispatch(actionCreators.openCreateJobDialog()),
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Querier);

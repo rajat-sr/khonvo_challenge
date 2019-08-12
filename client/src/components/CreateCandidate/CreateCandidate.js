@@ -29,7 +29,7 @@ class CreateCandidate extends Component {
       >
         <h2>Add a new candidate</h2>
         <label>Name: </label>
-        <input type="text" />
+        <input type="text" value />
         <label>Email: </label>
         <input type="text" />
         <label>Job Title: </label>
@@ -38,7 +38,7 @@ class CreateCandidate extends Component {
         <input type="text" />
         <label>GitHub: </label>
         <input type="text" />
-        <Button>Add</Button>
+        <Button className={classes.addbutton}>Add</Button>
       </Dialog>
     );
   }
