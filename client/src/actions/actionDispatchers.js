@@ -5,13 +5,16 @@ import {
   CLOSE_CREATE_CANDIDATE_DIALOG,
   OPEN_CREATE_JOB_DIALOG,
   CLOSE_CREATE_JOB_DIALOG,
-  SET_AUTHENTICATED
+  SET_AUTHENTICATED,
+  SET_JOBS,
 } from './actions';
+import { BASE_URL, axios } from '../utils';
+import { errorToast } from '../components/Toast/Toast';
 
 export function openJobDialog(jobid) {
   return {
     type: OPEN_JOB_DIALOG,
-    jobid
+    jobid,
   };
 }
 
@@ -24,7 +27,7 @@ export function closeJobDialog() {
 export function openCreateCandidateDialog(jobid) {
   return {
     type: OPEN_CREATE_CANDIDATE_DIALOG,
-    jobid
+    jobid,
   };
 }
 
@@ -49,6 +52,35 @@ export function closeCreateJobDialog() {
 export function setAuthenticated(role) {
   return {
     type: SET_AUTHENTICATED,
-    role
-  }
+    role,
+  };
+}
+
+export function setJobList(jobQueue, processingQueue) {
+  return {
+    type: SET_JOBS,
+    jobQueue,
+    processingQueue
+  };
+}
+
+export function refreshJobList() {
+  return dispatch => {
+    const url = BASE_URL + '/job';
+    axios
+      .get(url)
+      .then(res => {
+        const jobQueue = [];
+        const processingQueue = [];
+        res.data.forEach(job => {
+          if (job.status === 'OPEN') {
+            jobQueue.push(job);
+          } else if (job.status === 'INPROCESS') {
+            processingQueue.push(job);
+          }
+        });
+        dispatch(setJobList(jobQueue, processingQueue));
+      })
+      .catch(e => errorToast(e.message));
+  };
 }

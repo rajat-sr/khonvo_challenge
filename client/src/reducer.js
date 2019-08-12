@@ -5,16 +5,19 @@ import {
   CLOSE_CREATE_CANDIDATE_DIALOG,
   OPEN_CREATE_JOB_DIALOG,
   CLOSE_CREATE_JOB_DIALOG,
-  SET_AUTHENTICATED
+  SET_AUTHENTICATED,
+  SET_JOBS,
 } from './actions/actions';
 
 const initialState = {
-  userRole: 'QUERIER',
+  userRole: 'PRODUCER',
+  jobQueue: [],
+  processingQueue: [],
   jobDialogOpen: false,
   selectedJobID: null,
   createCandidateDialogOpen: false,
   createJobDialogOpen: false,
-  showLoginPage: true
+  showLoginPage: true,
 };
 
 const reducer = (state = initialState, action) => {
@@ -68,8 +71,16 @@ const reducer = (state = initialState, action) => {
     return {
       ...state,
       userRole: action.role,
-      showLoginPage: false
-    }
+      showLoginPage: false,
+    };
+  }
+
+  if (action.type === SET_JOBS) {
+    return {
+      ...state,
+      jobQueue: action.jobQueue,
+      processingQueue: action.processingQueue,
+    };
   }
 
   return state;

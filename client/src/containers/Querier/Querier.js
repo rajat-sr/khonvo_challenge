@@ -12,11 +12,6 @@ import { errorToast } from '../../components/Toast/Toast';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 class Querier extends Component {
-  state = {
-    jobQueue: [],
-    processingQueue: [],
-  };
-
   onDragEnd = result => {
     const { destination, source } = result;
 
@@ -24,8 +19,8 @@ class Querier extends Component {
       return;
     }
 
-    const pickQueue = this.state[source.droppableId];
-    const dropQueue = this.state[destination.droppableId];
+    const pickQueue = this.props[source.droppableId];
+    const dropQueue = this.props[destination.droppableId];
 
     if (pickQueue === dropQueue) {
       return;
@@ -36,7 +31,7 @@ class Querier extends Component {
     const movedJobItem = updatedPickQueue.splice(source.index, 1)[0];
     updatedDropQueue.splice(destination.index, 0, movedJobItem);
 
-    const newState = { ...this.state };
+    const newState = { ...this.props };
     newState[source.droppableId] = updatedPickQueue;
     newState[destination.droppableId] = updatedDropQueue;
 
@@ -52,32 +47,19 @@ class Querier extends Component {
       .then()
       .catch(e => errorToast(e.message));
 
-    this.setState(newState);
+    this.props.setJobList(newState.jobQueue, newState.processingQueue);
   };
 
-  componentDidMount() {
-    const url = BASE_URL + '/job';
-    axios
-      .get(url)
-      .then(res => {
-        const jobQueue = [];
-        const processingQueue = [];
-        res.data.forEach(job => {
-          if (job.status === 'OPEN') {
-            jobQueue.push(job);
-          } else if (job.status === 'INPROCESS') {
-            processingQueue.push(job);
-          }
-        });
-        this.setState({ jobQueue, processingQueue });
-      })
-      .catch(e => errorToast(e.message));
-  }
-
   render() {
-    const { showJobDetailsDialog, showCreateJobDialog, openCreateJob } = this.props;
+    const {
+      showJobDetailsDialog,
+      showCreateJobDialog,
+      openCreateJob,
+      jobQueue,
+      processingQueue,
+    } = this.props;
 
-    const jobQueueList = this.state.jobQueue.map((job, index) => (
+    const jobQueueList = jobQueue.map((job, index) => (
       <Draggable draggableId={job._id} index={index} key={job._id}>
         {provided => (
           <div {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef}>
@@ -93,7 +75,7 @@ class Querier extends Component {
       </Draggable>
     ));
 
-    const processingQueueList = this.state.processingQueue.map((job, index) => (
+    const processingQueueList = processingQueue.map((job, index) => (
       <Draggable draggableId={job._id} key={job._id} index={index}>
         {provided => (
           <div {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef}>
@@ -160,12 +142,16 @@ const mapStateToProps = state => {
   return {
     showJobDetailsDialog: state.jobDialogOpen,
     showCreateJobDialog: state.createJobDialogOpen,
+    jobQueue: state.jobQueue,
+    processingQueue: state.processingQueue,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     openCreateJob: () => dispatch(actionCreators.openCreateJobDialog()),
+    setJobList: (jobQueue, processingQueue) =>
+      dispatch(actionCreators.setJobList(jobQueue, processingQueue)),
   };
 };
 
