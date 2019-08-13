@@ -78,7 +78,6 @@ router.get('/points', verifyUser, async (req, res) => {
   const { user } = req.body;
 
   if (user.role !== 'PRODUCER') {
-    console.log(user.role);
     return res.status(BAD_REQUEST).send('Invalid role');
   }
 

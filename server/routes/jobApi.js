@@ -38,7 +38,6 @@ router.get('/:id', verifyUser, async (req, res, next) => {
       .populate({ path: 'candidatesProposed.candidate' })
       .exec();
   } catch (e) {
-    console.log(e);
     return res.status(INTERNAL_SERVER_ERROR).send(e.message);
   }
 

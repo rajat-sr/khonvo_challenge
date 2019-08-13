@@ -89,7 +89,6 @@ export function refreshJobList() {
       })
       .catch(e => {
         errorToast(e.response.data);
-        console.log('refresh job');
       });
   };
 }
