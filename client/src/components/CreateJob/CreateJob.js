@@ -78,7 +78,7 @@ class CreateJob extends Component {
         closeCreateJobDialog();
         refreshJobList();
       })
-      .catch(e => errorToast(e.message));
+      .catch(e => errorToast(e.response.data));
   };
 
   render() {

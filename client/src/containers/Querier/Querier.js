@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as actionCreators from '../../actions/actionDispatchers';
+import fileDownload from 'js-file-download'
 import { Button, Card, Intent, H5 } from '@blueprintjs/core';
 import JobCard from '../../components/JobCard/JobCard';
 import JobDialog from '../../components/JobDialog/JobDialog';
@@ -53,10 +54,22 @@ class Querier extends Component {
         },
       )
       .then()
-      .catch(e => errorToast(e.message));
+      .catch(e => errorToast(e.response.data));
 
     this.props.setJobList(newState.jobQueue, newState.processingQueue);
   };
+
+  downloadcsv() {
+    const url = BASE_URL + '/user/likedcandidates';
+    axios
+      .get(url, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('khonvotoken')}`,
+        },
+      })
+      .then(res =>  fileDownload(res.data, 'candidates.csv'))
+      .catch(e => errorToast(e.response.data));
+  }
 
   render() {
     const {
@@ -119,7 +132,7 @@ class Querier extends Component {
             icon="download"
             className={classes.button}
             onClick={() => this.downloadcsv()}
-            style={{marginLeft: "0"}}
+            style={{ marginLeft: '0' }}
           >
             Download Liked Candidate List
           </Button>

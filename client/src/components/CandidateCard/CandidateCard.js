@@ -28,7 +28,7 @@ class CandidateCard extends Component {
         },
       )
       .then(() => (like ? successToast('Liked') : successToast('Rejected')))
-      .catch(e => errorToast(e.message));
+      .catch(e => errorToast(e.response.data));
   };
 
   render() {

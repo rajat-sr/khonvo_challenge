@@ -40,7 +40,7 @@ class SignIn extends Component {
       })
       .catch(e => {
         localStorage.clear();
-        errorToast(e.message);
+        errorToast(e.response.data);
       });
   };
 
@@ -74,7 +74,7 @@ class SignIn extends Component {
       })
       .catch(e => {
         localStorage.clear();
-        errorToast(e.message);
+        errorToast(e.response.data);
       });
   };
 

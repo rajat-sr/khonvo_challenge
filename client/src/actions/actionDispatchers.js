@@ -88,7 +88,7 @@ export function refreshJobList() {
         dispatch(setJobList(jobQueue, processingQueue));
       })
       .catch(e => {
-        errorToast(e.message);
+        errorToast(e.response.data);
         console.log('refresh job');
       });
   };

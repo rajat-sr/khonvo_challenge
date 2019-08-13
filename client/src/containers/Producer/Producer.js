@@ -23,7 +23,7 @@ class Producer extends Component {
         },
       })
       .then(res => this.setState({ points: res.data.points }))
-      .catch(e => errorToast(e.message));
+      .catch(e => errorToast(e.response.data));
   }
 
   render() {

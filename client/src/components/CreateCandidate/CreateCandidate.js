@@ -55,7 +55,7 @@ class CreateCandidate extends Component {
       })
       .catch(e => {
         console.log(e);
-        errorToast(e.message);
+        errorToast(e.response.data);
       });
   };
 
