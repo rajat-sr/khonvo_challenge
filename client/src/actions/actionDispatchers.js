@@ -10,7 +10,7 @@ import {
   LOGOUT,
 } from './actions';
 import { BASE_URL } from '../utils';
-import { errorToast } from '../components/Toast/Toast';
+import { errorToast, successToast } from '../components/Toast/Toast';
 import axios from 'axios';
 
 export function openJobDialog(jobid) {
@@ -88,13 +88,14 @@ export function refreshJobList() {
         dispatch(setJobList(jobQueue, processingQueue));
       })
       .catch(e => {
-        errorToast(e.response.data);
+        errorToast(e.response ? e.response.data : e.message);
       });
   };
 }
 
 export function logout() {
   localStorage.clear();
+  successToast('Logged out');
   return {
     type: LOGOUT,
   };

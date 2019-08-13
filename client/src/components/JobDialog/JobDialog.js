@@ -59,7 +59,7 @@ class JobDialog extends Component {
           candidatesProposed: res.data.candidatesProposed,
         });
       })
-      .catch(e => errorToast(e.response.data));
+      .catch(e => errorToast(e.response ? e.response.data : e.message));
   }
 
   render() {

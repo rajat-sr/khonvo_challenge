@@ -54,7 +54,7 @@ class CreateCandidate extends Component {
         this.handleClose();
       })
       .catch(e => {
-        errorToast(e.response.data);
+        errorToast(e.response ? e.response.data : e.message);
       });
   };
 

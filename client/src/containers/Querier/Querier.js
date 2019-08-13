@@ -54,7 +54,7 @@ class Querier extends Component {
         },
       )
       .then()
-      .catch(e => errorToast(e.response.data));
+      .catch(e => errorToast(e.response ? e.response.data : e.message));
 
     this.props.setJobList(newState.jobQueue, newState.processingQueue);
   };
@@ -68,7 +68,7 @@ class Querier extends Component {
         },
       })
       .then(res =>  fileDownload(res.data, 'candidates.csv'))
-      .catch(e => errorToast(e.response.data));
+      .catch(e => errorToast(e.response ? e.response.data : e.message));
   }
 
   render() {

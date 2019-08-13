@@ -34,13 +34,13 @@ class SignIn extends Component {
         },
       )
       .then(res => {
-        successToast('Logged in successfully');
+        successToast('Logged in');
         localStorage.setItem('role', res.data.role);
         this.props.setAuthenticated(res.data.role);
       })
       .catch(e => {
         localStorage.clear();
-        errorToast(e.response.data);
+        errorToast(e.response ? e.response.data : e.message);
       });
   };
 
@@ -69,12 +69,13 @@ class SignIn extends Component {
           this.setState({ askUserRole: true });
         } else {
           localStorage.setItem('role', res.data.role);
+          successToast('Logged in');
           this.props.setAuthenticated(res.data.role);
         }
       })
       .catch(e => {
         localStorage.clear();
-        errorToast(e.response.data);
+        errorToast(e.response ? e.response.data : e.message);
       });
   };
 
