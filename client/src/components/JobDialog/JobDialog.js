@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as actionCreators from '../../actions/actionDispatchers';
-import { Dialog } from '@blueprintjs/core';
+import { Dialog, Divider, H5 } from '@blueprintjs/core';
 import classes from './JobDialog.module.css';
 import CandidateList from '../CandidateList/CandidateList';
 import axios from 'axios';
@@ -77,7 +77,7 @@ class JobDialog extends Component {
         className={classes.twocolumns}
       >
         <div className={classes.jobDescription}>
-          <h5>JOB DESCRIPTION</h5>
+          <H5 style={{color: "#777"}}>JOB DESCRIPTION</H5>
           <h1>{companyName}</h1>
           <p>{companyDescription}</p>
           <h2>{jobTitle}</h2>
@@ -90,8 +90,9 @@ class JobDialog extends Component {
           <p>{candidatesRequired} candidate(s) are required</p>
           <p>Job is {status.toLowerCase()}</p>
         </div>
+        <Divider/>
         <div className={classes.candidates}>
-          <h5>CANDIDATES</h5>
+          <H5 style={{color: "#777"}}>CANDIDATES</H5>
           <CandidateList candidates={candidatesProposed} jobid={jobid} />
         </div>
       </Dialog>

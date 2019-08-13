@@ -69,6 +69,7 @@ class Querier extends Component {
               candidatesRequired={job.candidatesRequired}
               key={job._id}
               jobid={job._id}
+              candidatesProposed={job.candidatesProposed}
             />
           </div>
         )}
@@ -85,6 +86,7 @@ class Querier extends Component {
               candidatesRequired={job.candidatesRequired}
               key={job._id}
               jobid={job._id}
+              candidatesProposed={job.candidatesProposed}
             />
           </div>
         )}
@@ -107,7 +109,7 @@ class Querier extends Component {
           <div className={classes.querierList}>
             <DragDropContext onDragEnd={this.onDragEnd}>
               <div>
-                <H5 style={{ color: '#aaa', margin: "10px" }}>JOB QUEUE</H5>
+                <H5 style={{ color: '#aaa', margin: '10px' }}>JOB QUEUE</H5>
                 <Card className={classes.card}>
                   <Droppable droppableId="jobQueue">
                     {provided => (
@@ -120,7 +122,7 @@ class Querier extends Component {
                 </Card>
               </div>
               <div>
-                <H5 style={{ color: '#aaa', margin: "10px" }}>PROCESSING QUEUE</H5>
+                <H5 style={{ color: '#aaa', margin: '10px' }}>PROCESSING QUEUE</H5>
                 <Card className={classes.card}>
                   <Droppable droppableId="processingQueue">
                     {provided => (

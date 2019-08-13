@@ -16,11 +16,28 @@ class CandidateList extends Component {
   render() {
     const { userRole, candidates, jobid } = this.props;
     const candidateList = candidates.map(candidate => {
-      if (userRole === 'QUERIER') {
-        return <QuerierCard liked={candidate.status} candidate={candidate.candidate} key={candidate._id} jobid={jobid}/>;
-      } else {
-        return <CandidateCard liked={candidate.status} candidate={candidate.candidate} key={candidate._id} jobid={jobid} />;
+      if (candidate.status !== 'REJECTED') {
+        if (userRole === 'QUERIER') {
+          return (
+            <QuerierCard
+              liked={candidate.status}
+              candidate={candidate.candidate}
+              key={candidate._id}
+              jobid={jobid}
+            />
+          );
+        } else {
+          return (
+            <CandidateCard
+              liked={candidate.status}
+              candidate={candidate.candidate}
+              key={candidate._id}
+              jobid={jobid}
+            />
+          );
+        }
       }
+      return null;
     });
     return (
       <div>
@@ -38,13 +55,13 @@ class CandidateList extends Component {
 const mapStateToProps = state => {
   return {
     userRole: state.userRole,
-    jobid: state.selectedJobID
+    jobid: state.selectedJobID,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    openCreateCandidate: (jobid) => dispatch(actionCreators.openCreateCandidateDialog(jobid)),
+    openCreateCandidate: jobid => dispatch(actionCreators.openCreateCandidateDialog(jobid)),
     closeJobDialog: () => dispatch(actionCreators.closeJobDialog()),
   };
 };

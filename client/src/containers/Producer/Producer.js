@@ -17,6 +17,7 @@ class Producer extends Component {
         candidatesRequired={job.candidatesRequired}
         key={job._id}
         jobid={job._id}
+        candidatesProposed={job.candidatesProposed}
       />
     ));
 
