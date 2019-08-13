@@ -87,7 +87,7 @@ class SignIn extends Component {
           {this.state.askUserRole ? (
             <div>
               <RadioGroup
-                label="Please choose your role. This cannot be changed in the future."
+                label="Please choose your role."
                 onChange={this.handleUserRoleChange}
                 selectedValue={this.state.userRole}
                 inline

@@ -70,4 +70,22 @@ router.patch('/role', verifyUser, async (req, res) => {
   return res.status(OKAY).send({ role });
 });
 
+// Get points of a producer
+router.get('/points', verifyUser, async (req, res) => {
+  const { user } = req.body;
+
+  if (user.role !== 'PRODUCER') {
+    return res.status(BAD_REQUEST).send('Invalid role');
+  }
+
+  let points;
+  if (!user.producerInfo.candidatesLiked.length) {
+    points = 0;
+  } else {
+    points = user.producerInfo.candidatesLiked.length;
+  }
+
+  return res.status(OKAY).send({ points });
+});
+
 module.exports = router;

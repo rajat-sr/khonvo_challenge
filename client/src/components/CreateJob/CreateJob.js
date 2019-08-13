@@ -35,7 +35,7 @@ class CreateJob extends Component {
   };
 
   handleAddButton = () => {
-    const { closeCreateJobDialog } = this.props;
+    const { closeCreateJobDialog, refreshJobList } = this.props;
     const url = BASE_URL + '/job';
     const {
       companyName,
@@ -47,7 +47,6 @@ class CreateJob extends Component {
       candidatesRequired,
     } = this.state;
 
-    console.log(this.state);
     if (
       !companyName ||
       !companyDescription ||
@@ -73,6 +72,7 @@ class CreateJob extends Component {
       .then(res => {
         successToast('New job created');
         closeCreateJobDialog();
+        refreshJobList();
       })
       .catch(e => errorToast(e.message));
   };
@@ -197,6 +197,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     closeCreateJobDialog: () => dispatch(actionCreators.closeCreateJobDialog()),
+    refreshJobList: () => dispatch(actionCreators.refreshJobList())
   };
 };
 

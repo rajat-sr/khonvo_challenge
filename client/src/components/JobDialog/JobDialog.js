@@ -45,7 +45,7 @@ class JobDialog extends Component {
         companyDescription: res.data.companyDescription,
         jobTitle: res.data.jobTitle,
         jobDescription: res.data.jobDescription,
-        addedBy: res.data.addedBy,
+        addedBy: res.data.addedBy.name,
         location: res.data.location,
         compensation: res.data.compensation,
         candidatesRequired: res.data.candidatesRequired,

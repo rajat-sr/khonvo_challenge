@@ -7,6 +7,7 @@ const { verifyUser } = require('../middlewares/authentication');
 
 const Job = require('../models/job');
 const Candidate = require('../models/candidate');
+const User = require('../models/user');
 
 const router = express.Router();
 
@@ -32,8 +33,12 @@ router.get('/:id', verifyUser, async (req, res, next) => {
 
   let jobs;
   try {
-    jobs = await Job.findById(id).populate({ path: 'candidatesProposed.candidate' });
+    jobs = await Job.findById(id)
+      .populate('addedBy')
+      .populate({ path: 'candidatesProposed.candidate' })
+      .exec();
   } catch (e) {
+    console.log(e);
     return res.status(INTERNAL_SERVER_ERROR).send(e.message);
   }
 
@@ -55,7 +60,8 @@ router.post('/', verifyUser, async (req, res, next) => {
     compensation,
     candidatesRequired,
   } = req.body;
-  const addedBy = '123456789012';
+  const user = req.body.user._id;
+  const addedBy = user;
 
   if (!companyName || !jobTitle || !jobDescription || !location || !candidatesRequired) {
     return res.status(BAD_REQUEST).send();
@@ -73,6 +79,7 @@ router.post('/', verifyUser, async (req, res, next) => {
       candidatesRequired,
       addedBy,
     });
+    await User.findByIdAndUpdate(user, { $push: { 'querierInfo.jobsCreated': savedJob._id } });
   } catch (e) {
     return res.status(INTERNAL_SERVER_ERROR).send(e.message);
   }
@@ -106,7 +113,7 @@ router.patch('/:id/status', verifyUser, async (req, res) => {
 // Like/Reject a candidate
 async function likeOrRejectCandidate(req, res) {
   const { jobid, candidateid } = req.params;
-  const { like } = req.body;
+  const { like, user } = req.body;
 
   if (!isDocumentIdValid(jobid) || !isDocumentIdValid(candidateid)) {
     return res.status(BAD_REQUEST).send('Invalid job id or candidate id');
@@ -121,7 +128,23 @@ async function likeOrRejectCandidate(req, res) {
       { new: true },
     );
     if (like) {
-      await Candidate.findByIdAndUpdate(candidateid, { $push: { jobsLikedAt: jobid } });
+      const cand = await Candidate.findByIdAndUpdate(
+        candidateid,
+        { $push: { jobsLikedAt: jobid } },
+        { new: true },
+      );
+      await User.findByIdAndUpdate(user._id, {
+        $push: { 'querierInfo.candidatesLiked': cand._id },
+      });
+
+      // Important to calculate points of producer
+      await User.findByIdAndUpdate(cand.addedBy, {
+        $push: { 'producerInfo.candidatesLiked': cand._id },
+      });
+    } else {
+      await User.findByIdAndUpdate(user._id, {
+        $push: { 'querierInfo.candidatesRejected': cand._id },
+      });
     }
   } catch (e) {
     return res.status(INTERNAL_SERVER_ERROR).send(e.message);

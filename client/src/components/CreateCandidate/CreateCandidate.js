@@ -28,7 +28,7 @@ class CreateCandidate extends Component {
 
   handleButtonClick = () => {
     const { name, emailId, jobTitle, linkedin, github } = this.state;
-    const { jobid } = this.props;
+    const { jobid, refreshJobList } = this.props;
     if (!name || !emailId || !jobTitle) {
       errorToast('Please fill all the required inputs');
       return;
@@ -46,6 +46,7 @@ class CreateCandidate extends Component {
       })
       .then(() => {
         successToast('New Candidate Added');
+        refreshJobList();
         this.handleClose();
       })
       .catch(e => {
@@ -133,6 +134,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     closeCreateCandidateDialog: () => dispatch(actionCreators.closeCreateCandidateDialog()),
+    refreshJobList: () => dispatch(actionCreators.refreshJobList()),
   };
 };
 

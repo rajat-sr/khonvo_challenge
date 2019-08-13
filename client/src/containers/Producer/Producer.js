@@ -5,10 +5,26 @@ import JobCard from '../../components/JobCard/JobCard';
 import classes from './Producer.module.css';
 import JobDialog from '../../components/JobDialog/JobDialog';
 import CreateCandidate from '../../components/CreateCandidate/CreateCandidate';
+import axios from 'axios';
+import { BASE_URL } from '../../utils';
+import { errorToast } from '../../components/Toast/Toast';
 
 class Producer extends Component {
+  state = {
+    points: 0,
+  };
+
+  componentDidMount() {
+    const url = BASE_URL + '/user/points';
+    axios
+      .get(url)
+      .then(res => this.setState({ points: res.data.points }))
+      .catch(e => errorToast(e.message));
+  }
+
   render() {
-    const { points, queue } = this.props;
+    const { queue } = this.props;
+    const { points } = this.state;
 
     const populatedQueue = queue.map(job => (
       <JobCard
@@ -26,9 +42,9 @@ class Producer extends Component {
         {this.props.showJobDetailsDialog ? <JobDialog /> : null}
         {this.props.showCreateCandidateDialog ? <CreateCandidate /> : null}
         <Card className={classes.card}>
-        <div className={classes.points}>Points {points ? points : 0}</div>
-        <Divider/>
-          <H5 style={{ color: '#aaa', margin: "20px 10px" }}>JOBS</H5>
+          <div className={classes.points}>Points {points ? points : 0}</div>
+          <Divider />
+          <H5 style={{ color: '#aaa', margin: '20px 10px' }}>JOBS</H5>
           <div className={classes.producerJobs}>{populatedQueue}</div>
         </Card>
       </div>

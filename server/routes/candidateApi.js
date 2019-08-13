@@ -6,6 +6,7 @@ const { verifyUser } = require('../middlewares/authentication');
 
 const Candidate = require('../models/candidate');
 const Job = require('../models/job');
+const User = require('../models/user');
 
 const router = express.Router();
 
@@ -45,7 +46,7 @@ router.get('/:id', verifyUser, async (req, res, next) => {
 
 // Add a new candidate
 router.post('/', verifyUser, async (req, res, next) => {
-  const { name, emailId, jobTitle, linkedin, github, jobid } = req.body;
+  const { name, emailId, jobTitle, linkedin, github, jobid, user } = req.body;
 
   if (!name || !emailId) {
     return res.status(BAD_REQUEST).send();
@@ -64,10 +65,15 @@ router.post('/', verifyUser, async (req, res, next) => {
       linkedin,
       github,
       jobsAppliedTo: [jobid],
+      addedBy: user._id,
     });
 
     await Job.findByIdAndUpdate(jobid, {
       $push: { candidatesProposed: { candidate: candidate._id, status: 'PENDING' } },
+    });
+
+    await User.findByIdAndUpdate(user._id, {
+      $push: { 'producerInfo.candidatesCreated': candidate._id },
     });
   } catch (e) {
     return res.status(INTERNAL_SERVER_ERROR).send(e.message);

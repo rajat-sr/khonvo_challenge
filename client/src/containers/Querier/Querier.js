@@ -113,7 +113,7 @@ class Querier extends Component {
                 <Card className={classes.card}>
                   <Droppable droppableId="jobQueue">
                     {provided => (
-                      <div ref={provided.innerRef} {...provided.droppableProps}>
+                      <div style={{minHeight: "40px"}} ref={provided.innerRef} {...provided.droppableProps}>
                         {jobQueueList}
                         {provided.placeholder}
                       </div>
@@ -126,7 +126,7 @@ class Querier extends Component {
                 <Card className={classes.card}>
                   <Droppable droppableId="processingQueue">
                     {provided => (
-                      <div ref={provided.innerRef} {...provided.droppableProps}>
+                      <div style={{minHeight: "40px"}} ref={provided.innerRef} {...provided.droppableProps}>
                         {processingQueueList}
                         {provided.placeholder}
                       </div>
