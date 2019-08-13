@@ -89,4 +89,8 @@ router.get('/points', verifyUser, async (req, res) => {
   return res.status(OKAY).send({ points });
 });
 
+router.get('/likedcandidates', verifyUser, async (req, res) => {
+  
+})
+
 module.exports = router;

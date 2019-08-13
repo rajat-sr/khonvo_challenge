@@ -43,11 +43,15 @@ class Querier extends Component {
     }
 
     axios
-      .patch(`${BASE_URL}/job/${movedJobItem._id}/status`, { status: newStatus }, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('khonvotoken')}`,
+      .patch(
+        `${BASE_URL}/job/${movedJobItem._id}/status`,
+        { status: newStatus },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('khonvotoken')}`,
+          },
         },
-      })
+      )
       .then()
       .catch(e => errorToast(e.message));
 
@@ -110,6 +114,15 @@ class Querier extends Component {
           >
             Create new job
           </Button>
+          <Button
+            intent={Intent.NONE}
+            icon="download"
+            className={classes.button}
+            onClick={() => this.downloadcsv()}
+            style={{marginLeft: "0"}}
+          >
+            Download Liked Candidate List
+          </Button>
           <div className={classes.querierList}>
             <DragDropContext onDragEnd={this.onDragEnd}>
               <div>
@@ -117,7 +130,11 @@ class Querier extends Component {
                 <Card className={classes.card}>
                   <Droppable droppableId="jobQueue">
                     {provided => (
-                      <div style={{minHeight: "40px"}} ref={provided.innerRef} {...provided.droppableProps}>
+                      <div
+                        style={{ minHeight: '40px' }}
+                        ref={provided.innerRef}
+                        {...provided.droppableProps}
+                      >
                         {jobQueueList}
                         {provided.placeholder}
                       </div>
@@ -130,7 +147,11 @@ class Querier extends Component {
                 <Card className={classes.card}>
                   <Droppable droppableId="processingQueue">
                     {provided => (
-                      <div style={{minHeight: "40px"}} ref={provided.innerRef} {...provided.droppableProps}>
+                      <div
+                        style={{ minHeight: '40px' }}
+                        ref={provided.innerRef}
+                        {...provided.droppableProps}
+                      >
                         {processingQueueList}
                         {provided.placeholder}
                       </div>

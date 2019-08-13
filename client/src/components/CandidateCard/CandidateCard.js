@@ -18,11 +18,15 @@ class CandidateCard extends Component {
     }
 
     axios
-      .patch(url, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('khonvotoken')}`,
+      .patch(
+        url,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('khonvotoken')}`,
+          },
         },
-      })
+      )
       .then(() => (like ? successToast('Liked') : successToast('Rejected')))
       .catch(e => errorToast(e.message));
   };
