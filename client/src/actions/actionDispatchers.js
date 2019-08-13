@@ -7,7 +7,7 @@ import {
   CLOSE_CREATE_JOB_DIALOG,
   SET_AUTHENTICATED,
   SET_JOBS,
-  LOGOUT
+  LOGOUT,
 } from './actions';
 import { BASE_URL } from '../utils';
 import { errorToast } from '../components/Toast/Toast';
@@ -96,6 +96,6 @@ export function refreshJobList() {
 export function logout() {
   localStorage.clear();
   return {
-    type: LOGOUT
-  }
+    type: LOGOUT,
+  };
 }

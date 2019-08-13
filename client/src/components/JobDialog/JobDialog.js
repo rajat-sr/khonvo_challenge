@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as actionCreators from '../../actions/actionDispatchers';
-import { Dialog, Divider, H5 } from '@blueprintjs/core';
+import { Dialog, Divider, H2, H5 } from '@blueprintjs/core';
 import classes from './JobDialog.module.css';
 import CandidateList from '../CandidateList/CandidateList';
 import axios from 'axios';
@@ -69,11 +69,9 @@ class JobDialog extends Component {
       companyDescription,
       jobTitle,
       jobDescription,
-      addedBy,
       location,
       compensation,
       candidatesRequired,
-      status,
       candidatesProposed,
     } = this.state;
     return (
@@ -84,17 +82,25 @@ class JobDialog extends Component {
         className={classes.twocolumns}
       >
         <div className={classes.jobDescription}>
-          <H5 style={{ color: '#777' }}>JOB DESCRIPTION</H5>
-          <h1>{companyName}</h1>
-          <p>{companyDescription}</p>
-          <h2>{jobTitle}</h2>
-          <p>{jobDescription}</p>
-          <p>{addedBy}</p>
-          <p>Location: {location}</p>
-          <p>${compensation}</p>
-          <p>{candidatesRequired} candidate(s) are required</p>
-          <p>Job is {status.toLowerCase()}</p>
+          {companyName ? (
+            <>
+              <H2>{companyName}</H2>
+              <p>{companyDescription}</p>
+              <H5 style={{ color: '#777' }}>JOB POSITION</H5>
+              <p>{jobTitle}</p>
+              <H5 style={{ color: '#777' }}>JOB DESCRIPTION</H5>
+              <p>{jobDescription}</p>
+              <H5 style={{ color: '#777' }}>LOCATION</H5>
+              <p>{location}</p>
+              <H5 style={{ color: '#777' }}>COMPENSATION</H5>
+              <p>${compensation}</p>
+              <p>{candidatesRequired} candidate(s) required</p>
+            </>
+          ) : (
+            <H2 style={{ color: '#777' }}>Loading...</H2>
+          )}
         </div>
+
         <Divider />
         <div className={classes.candidates}>
           <H5 style={{ color: '#777' }}>CANDIDATES</H5>

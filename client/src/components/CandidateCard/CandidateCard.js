@@ -7,6 +7,10 @@ import { BASE_URL } from '../../utils';
 import { errorToast, successToast } from '../Toast/Toast';
 
 class CandidateCard extends Component {
+  state = {
+    updated: false,
+  };
+
   handleButtonClick = like => {
     const { jobid } = this.props;
     const candidateid = this.props.candidate._id;
@@ -27,12 +31,20 @@ class CandidateCard extends Component {
           },
         },
       )
-      .then(() => (like ? successToast('Liked') : successToast('Rejected')))
-      .catch(e => errorToast(e.response.data));
+      .then(() => {
+        if (like) {
+          successToast('Liked');
+        } else {
+          successToast('Rejected');
+        }
+        this.setState({ updated: true });
+      })
+      .catch(e => errorToast(e.response ? e.response.data : e.message));
   };
 
   render() {
     let { buttons, liked } = this.props;
+    let { updated } = this.state;
     let likeStatus = null;
     let { name, emailId, jobTitle, linkedin, github } = this.props.candidate;
     if (liked !== 'PENDING') {
@@ -81,7 +93,7 @@ class CandidateCard extends Component {
             GitHub
           </a>
         ) : null}
-        {buttons ? (
+        {updated ? null : buttons ? (
           <div style={{ marginTop: '20px' }}>
             <Divider />
             <span className={classes.icon} onClick={() => this.handleButtonClick(true)}>
