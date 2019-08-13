@@ -22,6 +22,9 @@ const CLIENT_ID = process.env.GOOGLE_ID;
 
 // Login/SignUp a user
 router.post('/', async (req, res, next) => {
+  if (!req.headers.authorization) {
+    return res.status(BAD_REQUEST).send('No auth token was passed');
+  }
   const authToken = req.headers.authorization.split(' ')[1];
   const client = new OAuth2Client(CLIENT_ID);
 

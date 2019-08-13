@@ -55,7 +55,15 @@ class SignIn extends Component {
 
     const url = BASE_URL + '/user';
     axios
-      .post(url)
+      .post(
+        url,
+        {},
+        {
+          headers: {
+            Authorization: 'Bearer ' + localStorage.getItem('khonvotoken'),
+          },
+        },
+      )
       .then(res => {
         if (res.data.newUser) {
           this.setState({ askUserRole: true });
