@@ -10,9 +10,16 @@ class TitleBar extends Component {
   }
 
   render() {
+    const name = localStorage.getItem('name');
+    let role = localStorage.getItem('role');
     return (
       <div className={classes.bar}>
         <H3 className={classes.title}>Khonvo</H3>
+        <div className={classes.user}>
+        <div className={classes.name}>{name}</div>
+        <div className={classes.role}>{role}</div>
+        </div>
+
         <div className={classes.button} onClick={() => this.handleLogout()}>
           Logout
         </div>

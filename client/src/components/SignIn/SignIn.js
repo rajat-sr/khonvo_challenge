@@ -50,8 +50,8 @@ class SignIn extends Component {
     }
     const token = response.tokenObj.id_token;
     localStorage.setItem('khonvotoken', token);
-    localStorage.setItem('name', response.tokenObj.name);
-    localStorage.setItem('email', response.tokenObj.email);
+    localStorage.setItem('name', response.profileObj.name);
+    localStorage.setItem('email', response.profileObj.email);
 
     const url = BASE_URL + '/user';
     axios

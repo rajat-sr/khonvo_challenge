@@ -34,3 +34,38 @@
   cursor: pointer;
   margin-right: 260px;
 }
+
+.user {
+  align-self: center;
+  height: 32px;
+  font-size: 14px;
+  line-height: 24px;
+  -webkit-box-pack: center;
+  justify-content: center;
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  color: rgb(19, 175, 120);
+  font-weight: 700;
+  border-radius: 4px;
+  border-width: initial;
+  border-style: none;
+  border-color: initial;
+  border-image: initial;
+  flex-direction: column;
+  margin-top: 5px;
+}
+
+.role {
+  color: #777;
+  font-size: 0.8rem;
+  text-transform: capitalize;
+  margin-top: 0;
+  font-stretch: expanded;
+}
+
+.name {
+  color: #333;
+  font-size: 1rem;
+  margin-bottom: -8px;
+}
