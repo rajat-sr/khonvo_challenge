@@ -7,6 +7,7 @@ import {
   CLOSE_CREATE_JOB_DIALOG,
   SET_AUTHENTICATED,
   SET_JOBS,
+  LOGOUT,
 } from './actions/actions';
 
 const initialState = {
@@ -17,7 +18,7 @@ const initialState = {
   selectedJobID: null,
   createCandidateDialogOpen: false,
   createJobDialogOpen: false,
-  showLoginPage: !localStorage.getItem('khonvotoken') ,
+  showLoginPage: !localStorage.getItem('khonvotoken'),
 };
 
 const reducer = (state = initialState, action) => {
@@ -80,6 +81,13 @@ const reducer = (state = initialState, action) => {
       ...state,
       jobQueue: action.jobQueue,
       processingQueue: action.processingQueue,
+    };
+  }
+
+  if (action.type === LOGOUT) {
+    return {
+      ...state,
+      showLoginPage: true,
     };
   }
 
