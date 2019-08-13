@@ -6,27 +6,39 @@ const User = require('../models/user');
 
 async function verifyUser(req, res, next) {
   let user;
+  let authToken;
 
   try {
-    const authToken = req.headers.authorization.split(' ')[1];
+    authToken = req.headers.authorization.split(' ')[1];
     if (!authToken) {
       throw new Error('Empty Auth Token');
     }
+  } catch (e) {
+    console.error('[Authentication] ', e);
+    return res.status(UNAUTHORIZED).send(e.message);
+  }
 
+  let email;
+  try {
     const client = new OAuth2Client(CLIENT_ID);
     const ticket = await client.verifyIdToken({
       idToken: authToken,
       audience: CLIENT_ID,
     });
     const payload = ticket.getPayload();
-    const email = payload.email;
-    
+    email = payload.email;
+  } catch (e) {
+    console.error('[Authentication] ', e);
+    return res.status(UNAUTHORIZED).send('Please logout and login again.');
+  }
+
+  try {
     user = await User.findOne({ emailId: email });
     if (!user) {
       throw new Error('User is not in database');
     }
   } catch (e) {
-    console.error('[Authentication] ', e)
+    console.error('[Authentication] ', e);
     return res.status(UNAUTHORIZED).send(e.message);
   }
 
