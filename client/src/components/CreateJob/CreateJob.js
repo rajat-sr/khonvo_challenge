@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Dialog, Button, FormGroup, InputGroup, H2, Intent, NumericInput } from '@blueprintjs/core';
+import { Dialog, Button, FormGroup, InputGroup, H2, Intent, NumericInput, TextArea } from '@blueprintjs/core';
 import { connect } from 'react-redux';
 import * as actionCreators from '../../actions/actionDispatchers';
 import classes from './CreateJob.module.css';
@@ -118,9 +118,12 @@ class CreateJob extends Component {
           label="Company Description"
           labelFor="company-description"
           labelInfo="(required)"
+          type="multi"
         >
-          <InputGroup
+          <TextArea
             id="company-description"
+            growVertically={false}
+            fill
             value={companyDescription}
             onChange={event => this.handleInputChange(event, 'companyDescription')}
             placeholder="Khonvo help recruiters make more placements..."
@@ -135,8 +138,10 @@ class CreateJob extends Component {
           />
         </FormGroup>
         <FormGroup label="Job Description" labelFor="job-description" labelInfo="(required)">
-          <InputGroup
+          <TextArea
             id="job-description"
+            growVertically={false}
+            fill
             value={jobDescription}
             onChange={event => this.handleInputChange(event, 'jobDescription')}
             placeholder="You'll be responsible for deploying..."

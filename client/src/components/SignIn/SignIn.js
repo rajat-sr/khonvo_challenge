@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Card,H4, Radio, RadioGroup, Intent, Elevation } from '@blueprintjs/core';
+import { Button, Card, H3, Radio, RadioGroup, Intent, Elevation } from '@blueprintjs/core';
 import { GoogleLogin } from 'react-google-login';
 import { errorToast, successToast } from '../Toast/Toast';
 import axios from 'axios';
@@ -82,8 +82,8 @@ class SignIn extends Component {
     return (
       <div className={classes.page}>
         <Card className={classes.card} elevation={Elevation.TWO}>
-          <H4>Khonvo</H4>
-          <p>Rajat</p>
+          <H3 style={{ marginTop: '20px' }}>Khonvo - Challenge</H3>
+          <p style={{ color: '#aaa', marginBottom: '50px' }}>Rajat Srivastava</p>
           {this.state.askUserRole ? (
             <div>
               <RadioGroup

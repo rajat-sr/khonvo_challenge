@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as actionCreators from '../../actions/actionDispatchers';
-import { Button } from '@blueprintjs/core';
+import { Button, Intent } from '@blueprintjs/core';
 import classes from './CandidateList.module.css';
 import QuerierCard from '../CandidateCard/QuerierCard';
 import CandidateCard from '../CandidateCard/CandidateCard';
@@ -43,7 +43,7 @@ class CandidateList extends Component {
       <div>
         <div className={classes.list}>{candidateList}</div>
         {userRole === 'QUERIER' ? null : (
-          <Button style={{ marginTop: '5px' }} onClick={() => this.handleAddCandidate()}>
+          <Button intent={Intent.PRIMARY} style={{ margin: '5px 10px' }} onClick={() => this.handleAddCandidate()}>
             Add new candidate
           </Button>
         )}

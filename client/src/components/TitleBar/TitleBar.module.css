@@ -8,6 +8,7 @@
 
 .title {
   margin: 20px 20px;
+  margin-left: 270px;
 }
 
 .button {
@@ -31,4 +32,5 @@
   border-color: initial;
   border-image: initial;
   cursor: pointer;
+  margin-right: 260px;
 }
