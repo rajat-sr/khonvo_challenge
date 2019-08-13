@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as actionCreators from '../../actions/actionDispatchers';
-import { Button, Card, Intent } from '@blueprintjs/core';
+import { Button, Card, Intent, H5 } from '@blueprintjs/core';
 import JobCard from '../../components/JobCard/JobCard';
 import JobDialog from '../../components/JobDialog/JobDialog';
 import CreateJob from '../../components/CreateJob/CreateJob';
@@ -95,44 +95,46 @@ class Querier extends Component {
       <div className={classes.querier}>
         {showJobDetailsDialog ? <JobDialog /> : null}
         {showCreateJobDialog ? <CreateJob /> : null}
-        <Button
-          intent={Intent.PRIMARY}
-          icon="plus"
-          className={classes.button}
-          onClick={() => openCreateJob()}
-        >
-          Create new job
-        </Button>
-        <div className={classes.querierList}>
-          <DragDropContext onDragEnd={this.onDragEnd}>
-            <div>
-              <p>JOB QUEUE</p>
-              <Card className={classes.card}>
-                <Droppable droppableId="jobQueue">
-                  {provided => (
-                    <div ref={provided.innerRef} {...provided.droppableProps}>
-                      {jobQueueList}
-                      {provided.placeholder}
-                    </div>
-                  )}
-                </Droppable>
-              </Card>
-            </div>
-            <div>
-              <p>PROCESSING QUEUE</p>
-              <Card className={classes.card}>
-                <Droppable droppableId="processingQueue">
-                  {provided => (
-                    <div ref={provided.innerRef} {...provided.droppableProps}>
-                      {processingQueueList}
-                      {provided.placeholder}
-                    </div>
-                  )}
-                </Droppable>
-              </Card>
-            </div>
-          </DragDropContext>
-        </div>
+        <Card className={classes.outercard}>
+          <Button
+            intent={Intent.PRIMARY}
+            icon="plus"
+            className={classes.button}
+            onClick={() => openCreateJob()}
+          >
+            Create new job
+          </Button>
+          <div className={classes.querierList}>
+            <DragDropContext onDragEnd={this.onDragEnd}>
+              <div>
+                <H5 style={{ color: '#aaa', margin: "10px" }}>JOB QUEUE</H5>
+                <Card className={classes.card}>
+                  <Droppable droppableId="jobQueue">
+                    {provided => (
+                      <div ref={provided.innerRef} {...provided.droppableProps}>
+                        {jobQueueList}
+                        {provided.placeholder}
+                      </div>
+                    )}
+                  </Droppable>
+                </Card>
+              </div>
+              <div>
+                <H5 style={{ color: '#aaa', margin: "10px" }}>PROCESSING QUEUE</H5>
+                <Card className={classes.card}>
+                  <Droppable droppableId="processingQueue">
+                    {provided => (
+                      <div ref={provided.innerRef} {...provided.droppableProps}>
+                        {processingQueueList}
+                        {provided.placeholder}
+                      </div>
+                    )}
+                  </Droppable>
+                </Card>
+              </div>
+            </DragDropContext>
+          </div>
+        </Card>
       </div>
     );
   }

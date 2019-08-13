@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { Button, Card, Radio, RadioGroup, Intent } from '@blueprintjs/core';
+import { Button, Card,H4, Radio, RadioGroup, Intent, Classes, Elevation } from '@blueprintjs/core';
 import { GoogleLogin } from 'react-google-login';
 import { errorToast, successToast } from '../Toast/Toast';
 import axios from 'axios';
 import { BASE_URL } from '../../utils';
 import { connect } from 'react-redux';
 import * as actionCreators from '../../actions/actionDispatchers';
+import classes from './SignIn.module.css';
 
 class SignIn extends Component {
   state = {
@@ -79,36 +80,44 @@ class SignIn extends Component {
 
   render() {
     return (
-      <div>
-        {this.state.askUserRole ? (
-          <div>
-            <RadioGroup
-              label="Please choose your role. This cannot be changed in the future."
-              onChange={this.handleUserRoleChange}
-              selectedValue={this.state.userRole}
-              inline
-            >
-              <Radio label="Producer" value="PRODUCER" />
-              <Radio label="Querier" value="QUERIER" />
-            </RadioGroup>
-            <Button intent={Intent.PRIMARY} onClick={this.handleButtonClick}>
-              Submit
-            </Button>
-          </div>
-        ) : (
-          <GoogleLogin
-            clientId={process.env.REACT_APP_GOOGLE_ID}
-            render={renderProps => (
-              <button onClick={renderProps.onClick} disabled={renderProps.disabled}>
-                This is my custom Google button
-              </button>
-            )}
-            buttonText="Login"
-            onSuccess={this.responseGoogle}
-            onFailure={this.responseGoogle}
-            cookiePolicy={'single_host_origin'}
-          />
-        )}
+      <div className={classes.page}>
+        <Card className={classes.card} elevation={Elevation.TWO}>
+          <H4>Khonvo</H4>
+          <p>Rajat</p>
+          {this.state.askUserRole ? (
+            <div>
+              <RadioGroup
+                label="Please choose your role. This cannot be changed in the future."
+                onChange={this.handleUserRoleChange}
+                selectedValue={this.state.userRole}
+                inline
+              >
+                <Radio label="Producer" value="PRODUCER" />
+                <Radio label="Querier" value="QUERIER" />
+              </RadioGroup>
+              <Button intent={Intent.PRIMARY} onClick={this.handleButtonClick}>
+                Submit
+              </Button>
+            </div>
+          ) : (
+            <GoogleLogin
+              clientId={process.env.REACT_APP_GOOGLE_ID}
+              render={renderProps => (
+                <button
+                  className={classes.google}
+                  onClick={renderProps.onClick}
+                  disabled={renderProps.disabled}
+                >
+                  Continue with Google
+                </button>
+              )}
+              buttonText="Login"
+              onSuccess={this.responseGoogle}
+              onFailure={this.responseGoogle}
+              cookiePolicy={'single_host_origin'}
+            />
+          )}
+        </Card>
       </div>
     );
   }

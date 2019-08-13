@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, H4, Icon, Intent } from '@blueprintjs/core';
+import { Card, H4, Icon, Intent, Divider } from '@blueprintjs/core';
 import { IconNames } from '@blueprintjs/icons';
 import classes from './CandidateCard.module.css';
 import axios from 'axios';
@@ -74,13 +74,15 @@ class CandidateCard extends Component {
           </a>
         ) : null}
         {buttons ? (
-          <div>
+          <div style={{marginTop: "20px"}}>
+            <Divider />
             <span className={classes.icon} onClick={() => this.handleButtonClick(true)}>
-              <Icon icon={IconNames.TICK} iconSize={Icon.SIZE_LARGE} intent={Intent.SUCCESS} />
+              <Icon icon={IconNames.TICK} iconSize={Icon.SIZE_LARGE} intent={Intent.SUCCESS} style={{margin: "0 10px"}} />
               Like
             </span>
+            <Divider/>
             <span className={classes.icon} onClick={() => this.handleButtonClick(false)}>
-              <Icon icon={IconNames.CROSS} iconSize={Icon.SIZE_LARGE} intent={Intent.DANGER} />
+              <Icon icon={IconNames.CROSS} iconSize={Icon.SIZE_LARGE} intent={Intent.DANGER} style={{margin: "0 10px"}} />
               Reject
             </span>
           </div>

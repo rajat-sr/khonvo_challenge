@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Card } from '@blueprintjs/core';
+import { Card, H5, Divider } from '@blueprintjs/core';
 import JobCard from '../../components/JobCard/JobCard';
 import classes from './Producer.module.css';
 import JobDialog from '../../components/JobDialog/JobDialog';
@@ -24,8 +24,12 @@ class Producer extends Component {
       <div className={classes.producer}>
         {this.props.showJobDetailsDialog ? <JobDialog /> : null}
         {this.props.showCreateCandidateDialog ? <CreateCandidate /> : null}
-        <div>Points {points}</div>
-        <Card className={classes.producerJobs}>{populatedQueue}</Card>
+        <Card className={classes.card}>
+        <div className={classes.points}>Points {points ? points : 0}</div>
+        <Divider/>
+          <H5 style={{ color: '#aaa', margin: "20px 10px" }}>JOBS</H5>
+          <div className={classes.producerJobs}>{populatedQueue}</div>
+        </Card>
       </div>
     );
   }
@@ -35,7 +39,7 @@ const mapStateToProps = state => {
   return {
     showJobDetailsDialog: state.jobDialogOpen,
     showCreateCandidateDialog: state.createCandidateDialogOpen,
-    queue: state.processingQueue
+    queue: state.processingQueue,
   };
 };
 
