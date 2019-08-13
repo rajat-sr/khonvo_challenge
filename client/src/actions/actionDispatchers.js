@@ -8,8 +8,9 @@ import {
   SET_AUTHENTICATED,
   SET_JOBS,
 } from './actions';
-import { BASE_URL, axios } from '../utils';
+import { BASE_URL } from '../utils';
 import { errorToast } from '../components/Toast/Toast';
+import axios from 'axios';
 
 export function openJobDialog(jobid) {
   return {
@@ -60,7 +61,7 @@ export function setJobList(jobQueue, processingQueue) {
   return {
     type: SET_JOBS,
     jobQueue,
-    processingQueue
+    processingQueue,
   };
 }
 
@@ -68,7 +69,11 @@ export function refreshJobList() {
   return dispatch => {
     const url = BASE_URL + '/job';
     axios
-      .get(url)
+      .get(url, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('khonvotoken')}`,
+        },
+      })
       .then(res => {
         const jobQueue = [];
         const processingQueue = [];
@@ -81,6 +86,9 @@ export function refreshJobList() {
         });
         dispatch(setJobList(jobQueue, processingQueue));
       })
-      .catch(e => errorToast(e.message));
+      .catch(e => {
+        errorToast(e.message);
+        console.log('refresh job');
+      });
   };
 }

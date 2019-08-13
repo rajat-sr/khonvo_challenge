@@ -10,14 +10,14 @@ import {
 } from './actions/actions';
 
 const initialState = {
-  userRole: 'PRODUCER',
+  userRole: localStorage.getItem('role'),
   jobQueue: [],
   processingQueue: [],
   jobDialogOpen: false,
   selectedJobID: null,
   createCandidateDialogOpen: false,
   createJobDialogOpen: false,
-  showLoginPage: true,
+  showLoginPage: !localStorage.getItem('khonvotoken') ,
 };
 
 const reducer = (state = initialState, action) => {

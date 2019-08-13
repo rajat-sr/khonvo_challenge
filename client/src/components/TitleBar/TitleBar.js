@@ -7,7 +7,7 @@ class TitleBar extends Component {
     return (
       <div className={classes.bar}>
         <H3 className={classes.title}>Khonvo</H3>
-        <div className={classes.button}>Logout</div>
+        <div className={classes.button} onClick={() => localStorage.clear()}>Logout</div>
       </div>
     );
   }

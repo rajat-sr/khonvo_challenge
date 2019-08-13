@@ -3,8 +3,8 @@ import { Dialog, Button, FormGroup, InputGroup, H2, Intent, NumericInput } from 
 import { connect } from 'react-redux';
 import * as actionCreators from '../../actions/actionDispatchers';
 import classes from './CreateJob.module.css';
-import axios from 'axios';
 import { BASE_URL } from '../../utils';
+import axios from 'axios';
 import { errorToast, successToast } from '../Toast/Toast';
 
 class CreateJob extends Component {
@@ -68,6 +68,10 @@ class CreateJob extends Component {
         location,
         compensation,
         candidatesRequired,
+      }, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('khonvotoken')}`,
+        },
       })
       .then(res => {
         successToast('New job created');

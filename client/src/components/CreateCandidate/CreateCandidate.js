@@ -43,6 +43,10 @@ class CreateCandidate extends Component {
         linkedin,
         github,
         jobid,
+      }, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('khonvotoken')}`,
+        },
       })
       .then(() => {
         successToast('New Candidate Added');

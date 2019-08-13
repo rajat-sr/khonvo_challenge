@@ -18,7 +18,11 @@ class CandidateCard extends Component {
     }
 
     axios
-      .patch(url)
+      .patch(url, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('khonvotoken')}`,
+        },
+      })
       .then(() => (like ? successToast('Liked') : successToast('Rejected')))
       .catch(e => errorToast(e.message));
   };
@@ -62,27 +66,37 @@ class CandidateCard extends Component {
               rel="noopener noreferrer"
               target="_blank"
               href={linkedin}
-              style={{ marginLeft: '5px' }}
+              style={{ marginLeft: '10px' }}
             >
               LinkedIN
             </a>
           </span>
         ) : null}
         {github ? (
-          <a rel="noopener noreferrer" target="_blank" href={github} style={{ marginLeft: '5px' }}>
+          <a rel="noopener noreferrer" target="_blank" href={github} style={{ marginLeft: '10px' }}>
             GitHub
           </a>
         ) : null}
         {buttons ? (
-          <div style={{marginTop: "20px"}}>
+          <div style={{ marginTop: '20px' }}>
             <Divider />
             <span className={classes.icon} onClick={() => this.handleButtonClick(true)}>
-              <Icon icon={IconNames.TICK} iconSize={Icon.SIZE_LARGE} intent={Intent.SUCCESS} style={{margin: "0 10px"}} />
+              <Icon
+                icon={IconNames.TICK}
+                iconSize={Icon.SIZE_LARGE}
+                intent={Intent.SUCCESS}
+                style={{ margin: '0 10px' }}
+              />
               Like
             </span>
-            <Divider/>
+            <Divider />
             <span className={classes.icon} onClick={() => this.handleButtonClick(false)}>
-              <Icon icon={IconNames.CROSS} iconSize={Icon.SIZE_LARGE} intent={Intent.DANGER} style={{margin: "0 10px"}} />
+              <Icon
+                icon={IconNames.CROSS}
+                iconSize={Icon.SIZE_LARGE}
+                intent={Intent.DANGER}
+                style={{ margin: '0 10px' }}
+              />
               Reject
             </span>
           </div>

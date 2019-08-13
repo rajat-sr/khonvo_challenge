@@ -26,6 +26,7 @@ async function verifyUser(req, res, next) {
       throw new Error('User is not in database');
     }
   } catch (e) {
+    console.error('[Authentication] ', e)
     return res.status(UNAUTHORIZED).send(e.message);
   }
 

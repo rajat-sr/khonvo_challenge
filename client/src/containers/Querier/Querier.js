@@ -6,8 +6,8 @@ import JobCard from '../../components/JobCard/JobCard';
 import JobDialog from '../../components/JobDialog/JobDialog';
 import CreateJob from '../../components/CreateJob/CreateJob';
 import classes from './Querier.module.css';
-import axios from 'axios';
 import { BASE_URL } from '../../utils';
+import axios from 'axios';
 import { errorToast } from '../../components/Toast/Toast';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
@@ -43,7 +43,11 @@ class Querier extends Component {
     }
 
     axios
-      .patch(`${BASE_URL}/job/${movedJobItem._id}/status`, { status: newStatus })
+      .patch(`${BASE_URL}/job/${movedJobItem._id}/status`, { status: newStatus }, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('khonvotoken')}`,
+        },
+      })
       .then()
       .catch(e => errorToast(e.message));
 

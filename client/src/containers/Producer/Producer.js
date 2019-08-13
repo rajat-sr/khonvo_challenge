@@ -5,8 +5,8 @@ import JobCard from '../../components/JobCard/JobCard';
 import classes from './Producer.module.css';
 import JobDialog from '../../components/JobDialog/JobDialog';
 import CreateCandidate from '../../components/CreateCandidate/CreateCandidate';
-import axios from 'axios';
 import { BASE_URL } from '../../utils';
+import axios from 'axios';
 import { errorToast } from '../../components/Toast/Toast';
 
 class Producer extends Component {
@@ -17,7 +17,11 @@ class Producer extends Component {
   componentDidMount() {
     const url = BASE_URL + '/user/points';
     axios
-      .get(url)
+      .get(url, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('khonvotoken')}`,
+        },
+      })
       .then(res => this.setState({ points: res.data.points }))
       .catch(e => errorToast(e.message));
   }
