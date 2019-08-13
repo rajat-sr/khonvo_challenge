@@ -55,15 +55,7 @@ class SignIn extends Component {
 
     const url = BASE_URL + '/user';
     axios
-      .post(
-        url,
-        {},
-        {
-          headers: {
-            Authorization: 'Bearer ' + token,
-          },
-        },
-      )
+      .post(url)
       .then(res => {
         if (res.data.newUser) {
           this.setState({ askUserRole: true });
@@ -72,8 +64,10 @@ class SignIn extends Component {
           successToast('Logged in');
           this.props.setAuthenticated(res.data.role);
         }
+        console.log('Google Authentication Done');
       })
       .catch(e => {
+        console.log('Google Authentication Failed', e);
         localStorage.clear();
         errorToast(e.response ? e.response.data : e.message);
       });
