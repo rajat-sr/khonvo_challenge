@@ -1,39 +1,13 @@
-# create-react-app React Project with Node Express Backend
+# Khonvo Challenge
 
-## Usage
+## Problem Statement
+Create a simple web app with two types of users. Use OAuth so only Google-compliant users are approved.
 
-Install [nodemon](https://github.com/remy/nodemon) globally
+The first user must be able to drag and drop a queue of job descriptions and ask them to be processed with a number of candidates asked for. Let’s call this user the “Querier”.
 
-```
-npm i nodemon -g
-```
+The second user must be able to send back a list of names, job titles, emails, linkedin profiles or github profiles. Let’s call this user the “Producer”. The “Producer”’s progress is measured in points.
 
-Install server and client dependencies
+The Querier must then approve which ones he or she liked based on the job description. For every profile that the Querier likes, the Producer must get “1 Point”.
 
-```
-yarn
-cd client
-yarn
-```
-
-To start the server and client at the same time (from the root of the project)
-
-```
-yarn dev
-```
-
-Running the production build on localhost. This will create a production build, then Node will serve the app on http://localhost:5000
-
-```
-NODE_ENV=production yarn dev:server
-```
-
-## How this works
-
-The key to use an Express backend with a project created with `create-react-app` is on using a **proxy**. We have a _proxy_ entry in `client/package.json`
-
-```
-"proxy": "http://localhost:5000/"
-```
-
-This tells Webpack development server to proxy our API requests to our API server, given that our Express server is running on **localhost:5000**
+**Bonus points:**
+The Querier should be able to download the CSV of all the profiles he or she liked.
